@@ -1,8 +1,8 @@
 import React from "react";
 import * as api from "./../api";
-import { persistor } from "./../services/store/Store";
 import { useSelector } from "react-redux";
 import LogoutButton from "../components/LogoutButton.jsx";
+
 const Dashboard = () => {
   const user = useSelector((state) => state.user.user);
   const logoutUser = () => {

@@ -34,6 +34,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
 
 
       t.timestamps null: false
+      
       t.string :first_name
       t.string :last_name
       t.string :category
@@ -41,7 +42,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       t.string :batch_name
       t.integer :year      
       t.string :position
-      t.string :
+      t.string :user_role
+      
     end
 
     add_index :users, :email,                unique: true
@@ -50,3 +52,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
     # add_index :users, :unlock_token,         unique: true
   end
 end
+
+
+# 
