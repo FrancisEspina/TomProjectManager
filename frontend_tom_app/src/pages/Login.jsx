@@ -1,19 +1,16 @@
 import { Link } from "react-router-dom";
-import React from "react";
 import * as Router from "react-router-dom";
+import React from "react";
 import { useDispatch } from "react-redux";
 import * as api from "./../api";
 import { setUser } from "../services/store/reducers/AuthSlice";
+import { useRedirectToDash, getCategoryName } from "../helpers/utils.jsx";
 
 const Login = () => {
+  useRedirectToDash();
+
   const navigate = Router.useNavigate();
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    if (api.isLoggedIn()) {
-      navigate("/");
-    }
-  }, []);
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -21,7 +18,6 @@ const Login = () => {
 
   const submitForm = async (event) => {
     event.preventDefault();
-
     try {
       const response = await api.loginUser(email, password); // Wait for the API response
       if (response.status === 200) {
@@ -37,7 +33,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="m-auto max-w-md flex min-h-screen flex-col justify-center py-12 lg:px-8">
+      <div className="m-auto max-w-md flex min-h-screen flex-col justify-center py-12 lg:px-6">
         <div className="card">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h3>Ω</h3>

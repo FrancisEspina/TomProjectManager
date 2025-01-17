@@ -2,17 +2,18 @@ import React from "react";
 import * as api from "./../api";
 import { useSelector } from "react-redux";
 import LogoutButton from "../components/LogoutButton.jsx";
-
+import { getCategoryName } from "../helpers/utils.jsx";
 const Dashboard = () => {
   const user = useSelector((state) => state.user.user);
-  const logoutUser = () => {
-    api.logoutUser();
-  };
   return (
     <>
-      <div>
-        <h1>Dashboard</h1>
-        <div>{user ? user.email : "No Logged in User"}</div>
+      <div style={{ height: "2000px" }}>
+        <h5>Welcome </h5>
+        <h2>
+          <b>
+            <span>{getCategoryName(user.category)} </span> {user.first_name}
+          </b>
+        </h2>
         <br />
         <LogoutButton />
       </div>

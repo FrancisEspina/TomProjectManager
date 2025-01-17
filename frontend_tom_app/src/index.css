@@ -84,7 +84,15 @@ input:not([type="radio"]):focus {
 }
 
 .card {
-  padding: 2em;
+  padding: 30px;
+}
+
+.card-sm {
+  padding: 15px;
+}
+
+.card,
+.card-sm {
   border-radius: 20px;
   outline: 1px solid rgb(209, 209, 209) !important;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0);
@@ -92,4 +100,16 @@ input:not([type="radio"]):focus {
 
 .m-auto {
   margin: auto;
+}
+
+.component-button {
+  outline: 1px solid rgb(209, 209, 209) !important;
+  padding: 6px;
+  background-color: transparent !important;
+}
+
+.component-button:hover {
+  transform: scale(1.05);
+  outline: 1px solid rgb(241, 197, 0) !important;
+  color: rgb(241, 197, 0);
 }

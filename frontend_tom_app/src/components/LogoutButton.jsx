@@ -8,11 +8,11 @@ const LogoutButton = () => {
   const dispatch = useDispatch();
   const navigate = router.useNavigate();
   const logoutUser = () => {
+    navigate("/login");
     dispatch(logout());
     sessionStorage.clear();
     localStorage.removeItem("persist:root");
     persistor.purge(); // Clear persisted Redux state
-    navigate("/login");
   };
 
   return <button onClick={logoutUser}>Logout</button>;
