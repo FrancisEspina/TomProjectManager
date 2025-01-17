@@ -48,6 +48,14 @@ export const router = createBrowserRouter([
         path: "/execomm",
         element: <div>Execomm</div>,
       },
+      {
+        path: "/about",
+        element: <div>About</div>,
+      },
+      {
+        path: "/tomlympics",
+        element: <div>Tomlympics</div>,
+      },
     ],
   },
 ]);
@@ -56,7 +64,7 @@ function MainContainer() {
   const renderElement = useSelector((state) => state.user.loggedIn);
   return (
     <div className="flex">
-      {renderElement && <SideNav />}
+      <div className="hidden lg:block">{renderElement && <SideNav />}</div>
       <div className="w-full">
         {renderElement && <NavBar />}
         <div className="px-10">

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Outlined from "@heroicons/react/24/outline";
 import logo from "./../assets/tomlogo.png";
-import * as Icon from "@heroicons/react";
 import { Link, useLocation } from "react-router-dom";
 
 const SideNav = () => {
+  const [open, setOpen] = useState(true);
   const location = useLocation(); // Get current route
   const navItems = [
     {
@@ -33,48 +33,90 @@ const SideNav = () => {
       icon: Outlined.UserGroupIcon,
     },
     {
+      name: "TΩMlympics",
+      path: "/tomlympics",
+      icon: Outlined.StarIcon,
+    },
+    {
       name: "Execomm",
       path: "/execomm",
       icon: Outlined.UsersIcon,
+    },
+
+    {
+      name: "About TΩM",
+      path: "/about",
+      icon: Outlined.InformationCircleIcon,
     },
   ];
   return (
     <>
       <aside className="h-screen sticky top-0">
-        <nav className="h-full w-80 flex flex-col backdrop-blur border-r shadow-sm p-6">
-          <div className="flex justify-between items-center">
+        <nav
+          className={`h-full ${
+            open ? "w-80" : "w-15"
+          } duration-500 flex flex-col backdrop-blur border-r shadow-sm ${
+            open ? "px-6" : "px-2"
+          } py-6`}
+        >
+          <div
+            className={`flex ${
+              open ? "justify-between" : "justify-center"
+            }  items-center`}
+          >
             <div className="flex items-center">
               <div>
-                <img src={logo} className="w-16" />
+                <img
+                  src={logo}
+                  className={
+                    (`overflow-hidden transition-all`, open ? "w-12" : "w-0")
+                  }
+                />
               </div>
-              <div className="ms-2">
+              <div className={`ms-2 ${open ? "block" : "hidden"}`}>
                 <h5>The Outstanding Master</h5>
               </div>
             </div>
-            <div>
-              <Outlined.ChevronLeftIcon className="size-6 hover:text-amber-500" />
+            <div
+              className="hover:text-amber-500 cursor-pointer
+              duration-500"
+              onClick={() => setOpen(!open)}
+            >
+              {open ? (
+                <Outlined.ChevronLeftIcon className="size-6" />
+              ) : (
+                <Outlined.ArrowsPointingOutIcon className="size-6 text-gray-500" />
+              )}
             </div>
           </div>
 
-          <div className="pt-10">
-            <ul>
-              {navItems.map((item) => (
-                <div key={item.name}>
-                  <Link to={item.path}>
-                    <li
-                      className={`p-3 rounded-lg rounded-lg flex items-center gap-2 ${
-                        location.pathname === item.path
-                          ? "bg-amber-500 text-white"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      <item.icon className="size-5"></item.icon>
-                      <h5>{item.name}</h5>
-                    </li>
-                  </Link>
-                </div>
+          <div className="mt-10">
+            <div className="mt-4 flex flex-col gap-2 relative ">
+              {navItems.map((item, i) => (
+                <Link
+                  key={i}
+                  to={item.path}
+                  className={`flex items-center text-sm p-3 rounded-xl ${
+                    location.pathname === item.path
+                      ? "text-white bg-amber-500"
+                      : "text-gray-600"
+                  }`}
+                >
+                  <item.icon className="size-5"></item.icon>
+                  <div
+                    className={`overflow-hidden transition-all  ${
+                      open ? "ms-3 w-32" : "w-0"
+                    }`}
+                  >
+                    {item.name}
+                  </div>
+                </Link>
               ))}
-            </ul>
+            </div>
+          </div>
+
+          <div className={`fixed bottom-5 text-gray-500`}>
+            <p>Copyright © 2025 Francis Espiña</p>
           </div>
         </nav>
       </aside>

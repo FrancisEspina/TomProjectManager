@@ -1,10 +1,15 @@
+@import "@fontsource/poppins";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/300.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Poppins, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.2;
   font-weight: 400;
   background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
   --light-bg-gradient: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
@@ -55,14 +60,15 @@ input {
 }
 
 button {
-  background-color: rgb(255, 230, 0);
+  @apply bg-amber-500;
   color: black;
   text-align: center;
   font-weight: 500;
+  font-size: 8pt !important;
 }
 
 button:hover {
-  background-color: rgb(255, 208, 0);
+  @apply bg-yellow-500;
 }
 
 button,
@@ -102,7 +108,7 @@ input:not([type="radio"]):focus {
   margin: auto;
 }
 
-.component-button {
+/* .component-button {
   outline: 1px solid rgb(209, 209, 209) !important;
   padding: 6px;
   background-color: transparent !important;
@@ -112,4 +118,4 @@ input:not([type="radio"]):focus {
   transform: scale(1.05);
   outline: 1px solid rgb(241, 197, 0) !important;
   color: rgb(241, 197, 0);
-}
+} */

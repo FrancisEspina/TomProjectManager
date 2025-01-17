@@ -15,7 +15,11 @@ const LogoutButton = () => {
     persistor.purge(); // Clear persisted Redux state
   };
 
-  return <button onClick={logoutUser}>Logout</button>;
+  return (
+    <button className="rounded-lg w-full" onClick={logoutUser}>
+      Logout
+    </button>
+  );
 };
 
 export default LogoutButton;
