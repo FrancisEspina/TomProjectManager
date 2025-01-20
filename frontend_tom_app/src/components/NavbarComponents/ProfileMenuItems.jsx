@@ -5,24 +5,46 @@ import * as Solid from "@heroicons/react/24/solid";
 import LogoutButton from "./../LogoutButton";
 import { Link } from "react-router-dom";
 const ProfileMenuItems = (props) => {
+  const profileItems = [
+    {
+      name: "Account Settings",
+      icon: Outlined.Cog6ToothIcon,
+      path: "/profile",
+    },
+    {
+      name: "My Tasks",
+      icon: Outlined.BookOpenIcon,
+      path: "/projects",
+    },
+    {
+      name: "My Projects",
+      icon: Outlined.UserIcon,
+      path: "/projects",
+    },
+  ];
+
   return (
     <div>
       <div className="flex items-center gap-2 m-2">
-        <Solid.UserCircleIcon className="size-10" />
+        <Solid.UserCircleIcon className="size-12" />
         <h4>
           {props.user.first_name} {props.user.last_name}
-          <p>{props.user.category == "F" ? "Fraternity" : "Ladies' Circle"}</p>
+          <p className="text-gray-500">{props.user.email}</p>
         </h4>
       </div>
-      <br />
-      <ul>
-        <li className="bg-gray-200 px-4 py-4 mb-2 gap-2 rounded-lg hover:bg-gray-300">
-          <Link className="flex gap-2 items-center" to="/projects">
-            <p>Profile Settings</p>
-            <Outlined.PhoneArrowDownLeftIcon className="size-4 ml-auto"></Outlined.PhoneArrowDownLeftIcon>
+      <hr className="my-3" />
+
+      {profileItems.map((profileItem, i) => (
+        <props.menuItem
+          key={i}
+          className="bg-transparent px-4 py-3 mb-2 gap-2 rounded-lg hover:bg-gray-200"
+        >
+          <Link className="flex gap-2 items-center" to={profileItem.path}>
+            <profileItem.icon className="size-5"></profileItem.icon>
+            <h5>{profileItem.name}</h5>
           </Link>
-        </li>
-      </ul>
+        </props.menuItem>
+      ))}
 
       <hr className="my-3" />
       <div className="mb-2">

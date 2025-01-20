@@ -142,7 +142,7 @@ export const DashBoardAnnouncements = () => {
                 <p>1d</p>
               </div>
             </div>
-            <div className="mt-2">
+            <div className="my-2">
               <h6>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
                 laboriosam dolorum, dicta molestias temporibus nemo iusto porro
@@ -150,6 +150,11 @@ export const DashBoardAnnouncements = () => {
                 velit aliquid soluta? Similique, iusto.
               </h6>
             </div>
+
+            <button className="flex items-center  mt-3 bg-transparent hover:bg-transparent hover:text-yellow-500">
+              <HeroOutlined.StarIcon className="size-5" />
+              <h5>Acknowledge</h5>
+            </button>
           </div>
         </div>
       </div>
@@ -262,6 +267,54 @@ export const DashboardResidents = () => {
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+export const Clock = ({
+  format = "HH:mm:ss:ms",
+  showDate = true,
+  style = {},
+  updateInterval = 1000,
+}) => {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, updateInterval);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, [updateInterval]);
+
+  const getFormattedTime = () => {
+    if (format === "HH:mm:ss:ms") {
+      return time.toLocaleTimeString();
+    } else if (format === "HH:mm") {
+      return time.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+    return time.toString(); // Fallback for custom formats
+  };
+
+  const getFormattedDate = () => {
+    return time.toLocaleDateString(undefined, {
+      weekday: "long", // "Monday"
+      year: "numeric", // "2025"
+      month: "long", // "January"
+      day: "numeric", // "21"
+    });
+  };
+
+  return (
+    <div className="text-end hidden lg:block md:block">
+      <h2 className="text-amber-500 font-semibold">{getFormattedTime()}</h2>
+      <h5 className="flex items-center">
+        <HeroOutlined.CalendarDaysIcon className="size-5" />{" "}
+        {getFormattedDate()}
+      </h5>
     </div>
   );
 };

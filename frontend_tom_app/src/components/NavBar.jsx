@@ -6,7 +6,7 @@ import SideNav from "./../components/SideNav.jsx";
 import transparent from "./../assets/tomlogotransparent.png";
 import ProfileMenuItems from "../components/NavbarComponents/ProfileMenuItems.jsx";
 import logo from "./../assets/tomlogo.png";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { checkValid } from "./../api.js";
 
@@ -84,23 +84,21 @@ const NavBar = () => {
 
           <div className="ml-auto flex items-center gap-3">
             {navButtons.map((button) => (
-              <div key={button.name} className="">
-                <Popover>
-                  <PopoverButton className="bg-transparent outline-0 hover:bg-transparent hover:text-amber-500 flex transition">
-                    <button.icon className="size-5" />
-                  </PopoverButton>
-
-                  <PopoverPanel
+              <div key={button.name}>
+                <Menu>
+                  <MenuButton className="bg-transparent outline-0 hover:bg-transparent hover:text-amber-500 flex ">
+                    <button.icon className="size-5 bg-transparent" />
+                  </MenuButton>
+                  <MenuItems
                     anchor="bottom end"
-                    className="w-52 px-3 pb-1 pt-2 shadow-lg rounded-2xl mt-5 bg-gray-100 z-10 sticky "
+                    className="bg-white w-fit-content px-3 pb-1 pt-2 shadow-lg rounded-2xl mt-5"
                   >
-                    <ProfileMenuItems user={user} />
-                  </PopoverPanel>
-                </Popover>
+                    <ProfileMenuItems user={user} menuItem={MenuItem} />
+                  </MenuItems>
+                </Menu>
               </div>
             ))}
           </div>
-          {/* <Menu></Menu> */}
         </div>
       </div>
 

@@ -24,7 +24,7 @@ Devise.setup do |config|
 
     # Sign up
     api.sign_up.enabled = true
-    api.sign_up.extra_fields = [:first_name, :last_name, :category]
+    api.sign_up.extra_fields = [:first_name, :last_name, :category, :batch_name, :year]
 
     # Authorization
     api.authorization.key = 'Authorization'

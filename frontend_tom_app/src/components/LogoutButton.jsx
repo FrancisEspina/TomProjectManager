@@ -5,11 +5,11 @@ import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
 const LogoutButton = () => {
   return (
     <button
-      className="bg-red-500 text-white rounded-xl  w-full flex items-center justify-center"
+      className={`bg-white hover:bg-red-500 hover:text-white text-red-500 rounded-xl w-full flex items-center gap-2 duration-0`}
       onClick={logoutUser}
     >
+      <ArrowRightEndOnRectangleIcon className="size-6" />
       <p>Sign Out</p>
-      <ArrowRightEndOnRectangleIcon className="size-6 ml-auto text-white" />
     </button>
   );
 };

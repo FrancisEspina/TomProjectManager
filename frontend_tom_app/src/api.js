@@ -83,10 +83,9 @@ export const registerUser = async (payload) => {
 
 export const getUsers = async (payload) => {
   try {
-    const token = getToken(); // Replace with the actual token or fetch it dynamically
     const response = await axiosInstance.get("/users/user", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
     return response.data; // Return the data if needed
@@ -95,6 +94,18 @@ export const getUsers = async (payload) => {
     // logoutUser();
     throw error.response?.data?.error_description || "An error occurred";
   }
+};
+
+export const getUser = async (userId) => {
+  try {
+    const response = await axiosInstance.get(`/users/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    return response.data; // Return the data if needed
+  } catch (error) {}
 };
 
 export const checkValid = async () => {

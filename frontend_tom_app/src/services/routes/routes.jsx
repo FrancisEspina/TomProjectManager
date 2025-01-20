@@ -6,6 +6,7 @@ import { createBrowserRouter } from "react-router-dom";
 import * as api from "./../../api";
 import Login from "./../../pages/Login";
 import Dashboard from "./../../pages/Dashboard";
+import Profile from "./../../pages/Profile";
 import Register from "./../../pages/Register";
 import ProtectedRoute from "./../../components/ProtectedRoute";
 import { useSelector } from "react-redux";
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "/tomlympics",
         element: <div>Tomlympics</div>,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },

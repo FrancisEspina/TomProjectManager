@@ -6,14 +6,21 @@ import * as DashboardComponents from "../components/DashboardComponents/Dashboar
 const Dashboard = () => {
   const user = useSelector((state) => state.user.user);
   return (
+    //      <DashboardComponents.CurrentProject />
     <div className="">
-      <div>
-        <h4 className="text-amber-500">Welcome </h4>
-        <h1 className="font-semibold">
-          <span>{getCategoryName(user && user.category)} </span>{" "}
-          {user && user.first_name}
-        </h1>
-        <h4 className="mt-1 text-gray-500">2025 | Batch Name</h4>
+      <div className="flex items-center">
+        <div>
+          <h4 className="text-amber-500">Welcome </h4>
+          <h1 className="font-semibold">
+            <span>{getCategoryName(user && user.category)} </span>{" "}
+            {user && user.first_name}
+          </h1>
+          <h4 className="mt-1 text-gray-500">2025 | Batch Name</h4>
+        </div>
+
+        <div className="ml-auto">
+          <DashboardComponents.Clock />
+        </div>
       </div>
       <div className="mt-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 gap-x-5">

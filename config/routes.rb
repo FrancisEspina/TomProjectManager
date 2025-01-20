@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  get 'pages/home'
-  get 'pages/restricted'
   devise_for :users, controllers: { registrations: 'users/registrations' }
   namespace :users do
-    resources :user, only: [:index]
+    resources :user, only: [:index, :show,]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
