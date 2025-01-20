@@ -5,11 +5,16 @@ import { useNavigate } from "react-router-dom";
 function ButtonIcon(props) {
   const navigate = useNavigate();
 
+  const handlClick = (event) => {
+    event.preventDefault(); // Prevent default anchor or form behavior
+    navigate(props.path && props.path);
+  };
+
   return (
     <button
-      onClick={() => navigate(props.path && props.path)}
-      className={`flex bg-gray-200 items-center gap-1 p-2 rounded-md max-h-9 ${
-        props.color ? `bg-${props.color}-300` : ""
+      onClick={handlClick}
+      className={`flex items-center gap-1 p-2 rounded-lg max-h-9 ${
+        props.color ? props.color : "bg-gray-200"
       }`}
     >
       {props.icon && <props.icon className="size-4" />}

@@ -22,8 +22,7 @@ const Login = () => {
       const response = await api.loginUser(email, password); // Wait for the API response
       if (response.status === 200) {
         const data = await response.data;
-        dispatch(setUser(data.resource_owner));
-        navigate("/");
+        dispatch(setUser(data));
       }
     } catch (error) {
       setError("Invalid Email or Password");

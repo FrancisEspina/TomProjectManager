@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import * as Outlined from "@heroicons/react/24/outline";
-import * as Solid from "@heroicons/react/24/solid";
-import LogoutButton from "../components/LogoutButton.jsx";
+import SideNav from "./../components/SideNav.jsx";
+
 import transparent from "./../assets/tomlogotransparent.png";
+import ProfileMenuItems from "../components/NavbarComponents/ProfileMenuItems.jsx";
 import logo from "./../assets/tomlogo.png";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { Link } from "react-router-dom";
+import { checkValid } from "./../api.js";
+
+import { useDispatch } from "react-redux";
+import { setUser } from "./../services/store/reducers/AuthSlice";
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const checkToken = async () => {
+    try {
+      const response = await checkValid(); // Wait for the API response
+      if (response.status === 200) {
+        const data = await response.data;
+        dispatch(setUser(data));
+      }
+    } catch (error) {
+      setError("Invalid Email or Password");
+      console.error("Error logging in:", error);
+    }
+  };
+  useEffect(() => {
+    checkToken();
+  }, []);
   const user = useSelector((state) => state.user.user);
+  const [show, setShow] = useState(true);
+
   const navButtons = [
     {
       name: "announcements",
@@ -39,69 +62,71 @@ const NavBar = () => {
   ];
   return (
     <>
-      <div className="backdrop-blur mb-2 py-5 sticky top-0 px-10 lg:px-10 md:px-8">
+      <div className="backdrop-blur mb-2 py-5 sticky top-0 px-7 lg:px-10  ">
         <div className="flex items-center">
           <div className="lg:hidden  ">
-            <img src={logo} className="size-10" alt="" />
+            <div onClick={() => setShow(!show)}>
+              <Outlined.Bars3Icon className="size-5" />
+            </div>
           </div>
-          <div className="hidden lg:block">
-            <input placeholder="Search" type="text"></input>
+
+          <div className="hidden lg:block w-80 relative">
+            <div className=" absolute top-1 right-2 z-10">
+              <Outlined.MagnifyingGlassIcon className=" p-1 size-7 text-gray-400" />
+            </div>
+
+            <input
+              placeholder="Search"
+              type="text"
+              className="pl-10 w-full border border-gray-300 rounded-md p-2"
+            />
           </div>
+
           <div className="ml-auto flex items-center gap-3">
             {navButtons.map((button) => (
               <div key={button.name} className="">
-                <Menu>
-                  <MenuButton className="bg-transparent hover:bg-transparent hover:text-amber-500 flex transition">
+                <Popover>
+                  <PopoverButton className="bg-transparent outline-0 hover:bg-transparent hover:text-amber-500 flex transition">
                     <button.icon className="size-5" />
-                    <MenuItems
-                      anchor="bottom"
-                      className="w-52 px-2 pt-2 shadow-lg rounded-xl mt-5 bg-gray-100 "
-                    >
-                      <div className="flex items-center gap-2 m-2">
-                        <Solid.UserCircleIcon className="size-10" />
-                        <h4>
-                          {user.first_name} {user.last_name}
-                          <p>
-                            {user.category == "F"
-                              ? "Fraternity"
-                              : "Ladies' Circle"}
-                          </p>
-                        </h4>
-                      </div>
-                      <br />
-                      <ul>
-                        <li className="bg-gray-200 px-4 py-4 mb-2 gap-2 rounded-lg hover:bg-gray-300">
-                          <Link
-                            className="flex gap-2 items-center"
-                            to="/projects"
-                          >
-                            <Outlined.PhoneArrowDownLeftIcon className="size-4"></Outlined.PhoneArrowDownLeftIcon>
-                            <h5>Profile Settings</h5>
-                          </Link>
-                        </li>
-                        <Link className="" to="/projects">
-                          <li className="flex gap-2 items-center bg-gray-200 px-4 py-4 mb-2 gap-2 rounded-lg hover:bg-gray-300">
-                            <Outlined.PhoneArrowDownLeftIcon className="size-4"></Outlined.PhoneArrowDownLeftIcon>
-                            <h5>Profile Settings</h5>
-                          </li>
-                        </Link>
+                  </PopoverButton>
 
-                        <hr className="my-3" />
-                        <li className="mb-2">
-                          <LogoutButton />
-                        </li>
-                      </ul>
-                    </MenuItems>
-                  </MenuButton>
-                </Menu>
+                  <PopoverPanel
+                    anchor="bottom end"
+                    className="w-52 px-3 pb-1 pt-2 shadow-lg rounded-2xl mt-5 bg-gray-100 z-10 sticky "
+                  >
+                    <ProfileMenuItems user={user} />
+                  </PopoverPanel>
+                </Popover>
               </div>
             ))}
           </div>
           {/* <Menu></Menu> */}
         </div>
       </div>
+
+      <HiddenNav show={show} setShow={setShow} />
     </>
   );
 };
+
+function HiddenNav(props) {
+  const closeNav = () => {
+    props.setShow(!props.show); // Safeguard in case the prop isn't passed
+  };
+
+  return (
+    <div
+      className={`lg:hidden bg-white sidebar fixed top-0 bottom-0 transition-transform duration-200 lg:left-0 ${
+        !props.show ? "translate-x-0" : "-translate-x-full"
+      } p-2 h-full`}
+    >
+      <Outlined.XMarkIcon
+        onClick={closeNav}
+        className="absolute hover:text-amber-500 right-5 top-11 z-10 size-6"
+      />
+      <SideNav onLinkClick={closeNav} />
+    </div>
+  );
+}
 
 export default NavBar;

@@ -1,23 +1,15 @@
 import React from "react";
-import * as router from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logout } from "../services/store/reducers/AuthSlice.js";
-import { persistor } from "../services/store/Store.js";
+import { logoutUser } from "../api.js";
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
 
 const LogoutButton = () => {
-  const dispatch = useDispatch();
-  const navigate = router.useNavigate();
-  const logoutUser = () => {
-    navigate("/login");
-    dispatch(logout());
-    sessionStorage.clear();
-    localStorage.removeItem("persist:root");
-    persistor.purge(); // Clear persisted Redux state
-  };
-
   return (
-    <button className="rounded-lg w-full" onClick={logoutUser}>
-      Logout
+    <button
+      className="bg-red-500 text-white rounded-xl  w-full flex items-center justify-center"
+      onClick={logoutUser}
+    >
+      <p>Sign Out</p>
+      <ArrowRightEndOnRectangleIcon className="size-6 ml-auto text-white" />
     </button>
   );
 };
