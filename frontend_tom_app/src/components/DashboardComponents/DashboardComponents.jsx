@@ -5,7 +5,7 @@ import { FaCircle, FaHandshake, FaRegComment } from "react-icons/fa";
 import { FiRepeat } from "react-icons/fi";
 import { FaHandshakeAngle } from "react-icons/fa6";
 import { TiHeartOutline, TiHeart } from "react-icons/ti";
-
+import IconBox from "./IconBox";
 import ButtonIcon from "../ButtonIcon";
 import { Link } from "react-router-dom";
 import { getUsers } from "../../api";
@@ -46,19 +46,28 @@ export const CurrentProject = () => {
         </div>
       </Link>
       {/* column 2 */}
-      <div className="p-5">
-        <div className="flex flex-col">
-          <div>
-            <div className="flex gap-1 small-title items-center mb-2">
-              <HeroOutlined.CalendarIcon className="size-5" />
-              <p>Event Date</p>
-            </div>
-            <h4 className="text-sm lg:text-lg">February 14, 2025</h4>
-          </div>
-          <br />
-          <div className="flex items-center">
+      <div className="lg:p-5 px-5 my-3 lg:my-0">
+        <div className="flex flex-col gap-5">
+          <div className="flex items-center gap-2">
+            <IconBox title={"Fri"} content="14" hover={"bg-red-500"}></IconBox>
             <div>
-              <div className="flex gap-1 small-title items-center mb-2">
+              <div className="flex gap-1 small-title items-center mb-1">
+                <HeroOutlined.CalendarIcon className="size-5" />
+                <p>Event Date</p>
+              </div>
+              <h4 className="text-sm lg:text-lg">February 14, 2025</h4>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <IconBox
+              title={"Funds"}
+              content="45%"
+              hover={"bg-green-500"}
+            ></IconBox>
+
+            <div>
+              <div className="flex gap-1 small-title items-center mb-1">
                 <HeroOutlined.BanknotesIcon className="size-5" />
                 <p>Solicitations</p>
               </div>
@@ -72,40 +81,49 @@ export const CurrentProject = () => {
         </div>
       </div>
       {/* col 3 */}
-      <div className="p-5">
-        <div className="flex flex-col items-center">
-          <div className="flex w-full">
+      <div className="lg:p-5 px-5 py-2">
+        <div className="flex flex-col gap-5">
+          <div className="flex items-center gap-2">
+            <IconBox
+              icon={HeroOutlined.PaintBrushIcon}
+              hover={"bg-purple-500"}
+            ></IconBox>
+
             <div>
-              <div className="flex mb-2 gap-1 items-center small-title">
-                <HeroOutlined.UserIcon className="size-5" />
+              <div className="flex gap-1 small-title items-center mb-1">
+                <HeroOutlined.UsersIcon className="size-5" />
                 <p>My Committee</p>
               </div>
-              <h4 className="text-sm lg:text-lg">
-                <b>Logistics</b>
-              </h4>
-              <br />
+              <h6 className="text-sm lg:text-lg">Publicity</h6>
             </div>
+
             <div className="ml-auto ">
               <ButtonIcon icon={HeroOutlined.BriefcaseIcon} />
             </div>
           </div>
 
-          <div className="flex w-full">
+          <div className="flex items-center gap-2">
+            <IconBox hover={"bg-red-500"} title={"Wed"} content="29"></IconBox>
+
             <div>
-              <div className="flex gap-1 items-center mb-2 small-title ">
+              <div className="flex gap-1 small-title items-center mb-1">
                 <HeroOutlined.ClockIcon className="size-5" />
-                <div className="">
-                  <p>Next Meeting</p>
-                </div>
-                {/* <div className="bg-green-500  rounded-lg text-white py-1 px-3">
-                  <h6>Meeting Ongoing</h6>
-                </div> */}
+                {true ? (
+                  <>
+                    <div className="text-[7pt] bg-green-500 text-white p-1 rounded-md">
+                      Meeting Ongoing
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p>Next Meeting</p>
+                  </>
+                )}
               </div>
-              <h4 className="text-sm lg:text-lg">
-                January 29, 2025 | 8:00 PM{" "}
-              </h4>
-              <br />
+              <h4 className="text-sm lg:text-lg">January 29, 2025</h4>
+              <p className="text-gray-500">8:00 PM</p>
             </div>
+
             <div className="ml-auto ">
               <ButtonIcon icon={HeroOutlined.LinkIcon} />
             </div>
@@ -131,7 +149,7 @@ export const DashBoardAnnouncements = () => {
         >
           <div className="p-5 hover:bg-gray-100 rounded-xl mb-2">
             <div className="flex items-center">
-              <HeroOutlined.MegaphoneIcon className="size-10 text-red-500 me-1" />
+              <HeroSolid.MegaphoneIcon className="size-7 text-red-500 me-1" />
               <div>
                 <h4>Announcement</h4>
                 <div className="badge badge-green">
@@ -142,19 +160,12 @@ export const DashBoardAnnouncements = () => {
                 <p>1d</p>
               </div>
             </div>
-            <div className="my-2">
+            <div className="mt-3">
               <h6>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
-                laboriosam dolorum, dicta molestias temporibus nemo iusto porro
-                doloribus totam ratione veritatis accusantium unde ut ipsam
-                velit aliquid soluta? Similique, iusto.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Accusantium praesentium labore nihil aut incidunt, tenetur
               </h6>
             </div>
-
-            <button className="flex items-center  mt-3 bg-transparent hover:bg-transparent hover:text-yellow-500">
-              <HeroOutlined.StarIcon className="size-5" />
-              <h5>Acknowledge</h5>
-            </button>
           </div>
         </div>
       </div>
@@ -163,63 +174,82 @@ export const DashBoardAnnouncements = () => {
 };
 
 export const DashboardFeed = () => {
+  const handlePostSelect = (event) => {
+    event.preventDefault();
+    console.log(event);
+  };
   return (
-    <div className="card-sm cursor-pointer ">
-      <div className="flex items-center mb-3  gap-1 m-1">
-        <HeroOutlined.DevicePhoneMobileIcon className="size-5" />
-        <p>Feed</p>
-        <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
-      </div>
+    <Link to="/feed">
+      <div className="card-sm cursor-pointer">
+        <div className="flex items-center mb-3  gap-1 m-1">
+          <HeroOutlined.DevicePhoneMobileIcon className="size-5" />
+          <p>Feed</p>
+          <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
+        </div>
 
-      <hr />
+        <hr />
 
-      <div className={`bg-white px-1 mt-3 ${maxHeight} ${minHeight}`}>
-        <div
-          id="post"
-          className="mb-1 rounded-xl  hover:bg-gray-100 px-5 py-6 "
-        >
-          <div className="flex items-center gap-1">
-            <HeroSolid.UserCircleIcon className="size-10" />
-            <div>
-              <h4>Jhoe Leil Adel</h4>
-              <p className="text-gray-700">@samyang</p>
+        <div className={`bg-white px-1 mt-3 ${maxHeight} ${minHeight}`}>
+          <div
+            onClick={handlePostSelect}
+            id="post"
+            className="mb-1 rounded-xl border  hover:bg-gray-100 px-5 py-6 "
+          >
+            <div className="flex items-center gap-1">
+              <HeroSolid.UserCircleIcon className="size-10 text-gray-400" />
+              <div>
+                <h5>Jhoe Leil Adel</h5>
+                <h6 className="text-gray-700">@samyang</h6>
+              </div>
+              <p className="ml-auto">1d</p>
             </div>
-            <p className="ml-auto">1d</p>
-          </div>
 
-          <div className="my-3 px-3">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-              autem aut provident distinctio fugit sunt quisquam mollitia omnis
-              neque. Officia quas doloremque libero laboriosam cumque
-              repudiandae praesentium, quo nobis corporis?
-            </p>
-          </div>
-          <br />
-          <div className="flex items-center">
-            <div className="flex gap-1 items-center">
-              <TiHeart color="red" size={20} />
-              <h5>
-                <b>24</b>
-              </h5>
+            <div className="my-3 px-3">
+              <p>SHEESSHH 🫥🫥</p>
             </div>
-            <div className="flex gap-2 ml-auto">
+            <br />
+            <div className="">
+              <div className="flex gap-1 items-center">
+                <TiHeart color="red" size={20} />
+                <h5>
+                  <b>24</b>
+                </h5>
+              </div>
+            </div>
+
+            <div className="flex gap-1 justify-center w-full mt-2">
               <ButtonIcon
+                width="w-full"
                 text="Like"
-                color="bg-gray-200"
+                color="bg-gray-100"
                 icon={TiHeartOutline}
               />
               <ButtonIcon
+                width="w-full"
                 text="Comment"
-                color="bg-gray-200"
+                color="bg-gray-100"
                 icon={FaRegComment}
               />
-              <ButtonIcon text="Share" color="bg-gray-200" icon={FiRepeat} />
+              <ButtonIcon
+                width="w-full"
+                text="Share"
+                color="bg-gray-100"
+                icon={FiRepeat}
+              />
             </div>
+          </div>
+
+          <div className="">
+            <button className="w-full hover:bg-gray-200 gap-1 hover:text-black bg-transparent flex items-center justify-center">
+              <div>
+                <HeroOutlined.EyeIcon className="size-4"></HeroOutlined.EyeIcon>
+              </div>
+              <p>View Feed</p>
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -237,28 +267,49 @@ export const DashboardResidents = () => {
   }, []);
   return (
     <div className="card-sm cursor-pointer">
-      <div className="flex items-center  gap-1 m-1">
+      <div className="flex items-center mb-3 gap-1 m-1">
         <HeroOutlined.DevicePhoneMobileIcon className="size-5" />
         <p>Residents</p>
         <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
       </div>
-
+      <hr />
       <div
-        className={`bg-gray-100 p-2 mt-5 bg-transparent rounded-lg ${minHeight} ${maxHeight}`}
+        className={`bg-gray-100 px-1 mt-3 bg-transparent rounded-lg ${minHeight} ${maxHeight}`}
       >
         {users.map((user, i) => (
           <div
             key={i}
-            className="p-3 hover:bg-gray-100 rounded-lg flex items-center gap-1"
+            className="p-3 hover:bg-gray-100 rounded-xl flex items-center gap-1"
           >
+            {user.profile_picture_url ? (
+              <>
+                <div>
+                  <img
+                    className="rounded-full size-8"
+                    src={user.profile_picture_url}
+                    alt=""
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <HeroSolid.UserCircleIcon className="size-8 text-gray-400" />
+                </div>
+              </>
+            )}
             <div>
-              <HeroSolid.UserCircleIcon className="size-8" />
-            </div>
-            <div>
-              <h5>
+              <div className="text-xs">
                 {user.first_name} {user.last_name}
-              </h5>
-              <h6>{user.category == "F" ? "Fraternity" : "Ladies' Circle"}</h6>
+              </div>
+              <h6 className="text-gray-500">
+                {/* {user.category == "F" ? "Fraternity" : "Ladies' Circle"} */}
+                {user.username
+                  ? user.username
+                  : user.category == "F"
+                  ? "Fraternity"
+                  : "Ladies' Circle"}
+              </h6>
             </div>
 
             <div className="ml-auto">
@@ -301,18 +352,24 @@ export const Clock = ({
 
   const getFormattedDate = () => {
     return time.toLocaleDateString(undefined, {
-      weekday: "long", // "Monday"
       year: "numeric", // "2025"
       month: "long", // "January"
       day: "numeric", // "21"
     });
   };
 
+  const getFormattedDay = () => {
+    return time.toLocaleDateString(undefined, {
+      weekday: "long", // "Monday"
+    });
+  };
+
   return (
     <div className="text-end hidden lg:block md:block">
+      <h5>{getFormattedDay()}</h5>
       <h2 className="text-amber-500 font-semibold">{getFormattedTime()}</h2>
       <h5 className="flex items-center">
-        <HeroOutlined.CalendarDaysIcon className="size-5" />{" "}
+        <HeroOutlined.CalendarDaysIcon className="size-5 me-1" />
         {getFormattedDate()}
       </h5>
     </div>

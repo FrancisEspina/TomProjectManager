@@ -1,8 +1,16 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations' }
   namespace :users do
-    resources :user, only: [:index, :show,]
+    resources :user, only: [:index, :show, :update] do
+      member do
+        patch :upload_profile_picture
+      end
+    end
   end
+    resources :posts, only: [:index, :create]
+
+
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -11,12 +11,13 @@
   font-family: "Poppins", sans-serif;
   line-height: 1.2;
   font-weight: 400;
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeeee 100%);
-  --light-bg-gradient: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-  --dark-bg-gradient: linear-gradient(120deg, #121212 0%, #1e1e1e 100%);
+  height: 100vh;
+  /* --light-bg-gradient: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  --dark-bg-gradient: linear-gradient(120deg, #121212 0%, #1e1e1e 100%); */
 }
 
 body {
+  background-color: #f1f1f1;
   transition: background-image 0.5s ease-in-out;
 }
 
@@ -55,10 +56,6 @@ h6 {
   font-size: 0.67em; /* 0.67em = 10.7px */
 }
 
-input {
-  margin-bottom: 8px;
-}
-
 button {
   @apply bg-amber-500;
   color: black;
@@ -69,8 +66,10 @@ button {
 }
 
 button:hover {
+  @apply text-white;
   @apply bg-yellow-500;
-  transform: scale(1.05);
+  @apply transition;
+  @apply duration-200;
 }
 
 button,
@@ -82,13 +81,14 @@ input:not([type="radio"]) {
 
 /* Apply specific styles to input types of text, email, and password */
 input:not([type="radio"]) {
-  background-color: rgb(236, 236, 236);
+  background-color: rgb(224, 224, 224);
   width: 100%;
   /* outline: 1px solid rgb(168, 168, 168) !important; */
 }
 
 input:not([type="radio"]):focus {
   outline: 3px solid rgb(255, 214, 32) !important; /* Change to your preferred color */
+  outline-offset: 2px;
 }
 
 .card {
@@ -157,7 +157,7 @@ input:not([type="radio"]):focus {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #cccccc;
+  background: #ececec;
   border-radius: 90px;
 }
 
@@ -172,4 +172,11 @@ input:not([type="radio"]):focus {
 
 .up:hover {
   transform: translate3d(0px, -3px, 0px);
+}
+
+.auto-resize {
+  min-height: 50px; /* Minimum height */
+  max-height: 300px; /* Optional maximum height */
+  overflow-y: auto; /* Show scroll when max height is reached */
+  resize: none; /* Disable manual resizing */
 }

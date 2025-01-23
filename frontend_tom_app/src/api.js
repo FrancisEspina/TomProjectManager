@@ -104,7 +104,23 @@ export const getUser = async (userId) => {
       },
     });
 
-    return response.data; // Return the data if needed
+    return response.data.user; // Return the data if needed
+  } catch (error) {}
+};
+
+export const updateUser = async (userId, userData) => {
+  try {
+    const response = await axiosInstance.put(
+      `/users/user/${userId}`,
+      { user: userData },
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+    return response.data;
+    // return response.data.user; // Return the data if needed
   } catch (error) {}
 };
 
@@ -118,9 +134,6 @@ export const checkValid = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    console.log("STILL VALID");
-    console.log(response);
     return true; // Return true if
   } catch (error) {
     try {
@@ -138,5 +151,68 @@ export const checkValid = async () => {
       console.log("REFRESH TOKEN EXPIRED... YOU WILL BE LOGGED OUT");
       logoutUser();
     }
+  }
+};
+
+export const getPosts = async () => {
+  try {
+    const response = await axiosInstance.get("/posts", {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw error.response.data.error_description;
+  }
+};
+
+export const createPost = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/posts",
+      {
+        id: payload.user_id,
+        post: {
+          content: payload.content,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw error.response.data.error_description;
+  }
+};
+
+export const updateProfilePic = async (formData, userId) => {
+  try {
+    console.log(formData); // Log the FormData contents for debugging
+
+    const response = await axios.patch(
+      `${API_URL}/users/user/${userId}/upload_profile_picture`, 
+      formData, 
+      {
+        headers: {
+          "Content-Type": "multipart/form-data", // Required for file uploads
+          Authorization: `Bearer ${getToken()}`, // Include token if authentication is required
+        },
+      }
+    );
+
+    console.log("Response:", response.data); // Log the server response
+    return response.data; // Return response if needed
+  } catch (error) {
+    console.error(
+      "Error:",
+      error.response?.data?.error_description || error.message
+    );
+    throw error; // Re-throw the error for further handling
   }
 };

@@ -57,7 +57,7 @@ const SideNav = ({ onLinkClick }) => {
   ];
   return (
     <>
-      <aside className="h-screen sticky top-0 bg-transparent">
+      <aside className="h-screen sticky top-0 bg-transparent ">
         <nav
           className={`h-screen ${
             open ? "w-80" : "w-15"
@@ -81,6 +81,7 @@ const SideNav = ({ onLinkClick }) => {
               </div>
               <div className={`ms-2 ${open ? "block" : "hidden"}`}>
                 <h5>The Outstanding Master</h5>
+                <h6 className="text-gray-500">v. 1.0</h6>
               </div>
             </div>
             <div

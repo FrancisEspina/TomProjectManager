@@ -22,6 +22,7 @@ const Login = () => {
       const response = await api.loginUser(email, password); // Wait for the API response
       if (response.status === 200) {
         const data = await response.data;
+        console.log("SETTING USER TO STORE", data);
         dispatch(setUser(data));
       }
     } catch (error) {
@@ -55,8 +56,7 @@ const Login = () => {
                   />
                 </div>
               </div>
-
-              <div>
+              <div className="mt-3">
                 <div className="flex items-center justify-between">
                   <label htmlFor="password" className="">
                     <p>Password</p>

@@ -71,7 +71,7 @@ const Register = () => {
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label>
-                <p>First Name</p>
+                <p className="mb-1">First Name</p>
               </label>
               <input
                 name="first_name"
@@ -84,7 +84,7 @@ const Register = () => {
             </div>
             <div>
               <label>
-                <p>Last Name</p>
+                <p className="mb-1">Last Name</p>
               </label>
               <input
                 name="last_name"
@@ -99,7 +99,7 @@ const Register = () => {
 
           <div className="flex gap-3 my-3">
             {categories.map((category) => (
-              <label key={category.value} className="flex space-x-1">
+              <label key={category.value} className="flex space-x-1 ">
                 <input
                   required
                   type="radio"
@@ -115,7 +115,7 @@ const Register = () => {
 
           <div>
             <label>
-              <p>Email</p>
+              <p className="mb-1">Email</p>
             </label>
             <input
               name="email"
@@ -131,7 +131,7 @@ const Register = () => {
             </div>
 
             <label>
-              <p>Password</p>
+              <p className="my-2">Password</p>
             </label>
             <input
               name="password"
@@ -143,7 +143,7 @@ const Register = () => {
             />
 
             <label>
-              <p>Confirm Password</p>
+              <p className="my-2">Confirm Password</p>
             </label>
             <input
               name="confirm_password"

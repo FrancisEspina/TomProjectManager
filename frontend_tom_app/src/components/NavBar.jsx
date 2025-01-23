@@ -62,7 +62,7 @@ const NavBar = () => {
   ];
   return (
     <>
-      <div className="backdrop-blur mb-2 py-5 sticky top-0 px-7 lg:px-10  ">
+      <div className="backdrop-blur mb-2 py-5 sticky top-0 px-7 lg:px-10 z-10 ">
         <div className="flex items-center">
           <div className="lg:hidden  ">
             <div onClick={() => setShow(!show)}>
@@ -114,7 +114,7 @@ function HiddenNav(props) {
 
   return (
     <div
-      className={`lg:hidden bg-white sidebar fixed top-0 bottom-0 transition-transform duration-200 lg:left-0 ${
+      className={`lg:hidden bg-white sidebar fixed top-0 bottom-0 transition-transform duration-200 lg:left-0 z-20 ${
         !props.show ? "translate-x-0" : "-translate-x-full"
       } p-2 h-full`}
     >

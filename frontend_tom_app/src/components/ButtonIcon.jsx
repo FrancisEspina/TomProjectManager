@@ -13,12 +13,12 @@ function ButtonIcon(props) {
   return (
     <button
       onClick={handlClick}
-      className={`flex items-center gap-1 p-2 rounded-lg max-h-9 ${
-        props.color ? props.color : "bg-gray-200"
-      }`}
+      className={`flex justify-center items-center gap-1 center p-2 rounded-lg max-h-9 ${
+        props.width
+      }  ${props.color ? props.color : "bg-gray-200"}`}
     >
       {props.icon && <props.icon className="size-4" />}
-      {props.text && <p>{props.text}</p>}
+      {props.text && <p className="hidden lg:block">{props.text}</p>}
     </button>
   );
 }

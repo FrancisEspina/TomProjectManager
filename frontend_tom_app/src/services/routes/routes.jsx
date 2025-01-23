@@ -8,6 +8,7 @@ import Login from "./../../pages/Login";
 import Dashboard from "./../../pages/Dashboard";
 import Profile from "./../../pages/Profile";
 import Register from "./../../pages/Register";
+import Feed from "./../../pages/Feed";
 import ProtectedRoute from "./../../components/ProtectedRoute";
 import { useSelector } from "react-redux";
 export const router = createBrowserRouter([
@@ -37,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/feed",
-        element: <div>Feed</div>,
+        element: <Feed />,
       },
       {
         path: "/schedules",
@@ -75,7 +76,7 @@ function MainContainer() {
       <div className="hidden lg:block">{api.isLoggedIn() && <SideNav />}</div>
       <div className="w-full">
         {api.isLoggedIn() && <NavBar />}
-        <div className="px-10">
+        <div className="px-3 lg:px-10">
           <Outlet></Outlet>
         </div>
       </div>

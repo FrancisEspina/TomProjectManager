@@ -11,11 +11,14 @@ const Dashboard = () => {
       <div className="flex items-center">
         <div>
           <h4 className="text-amber-500">Welcome </h4>
-          <h1 className="font-semibold">
+          <div className="text-2xl lg:text-3xl md:text-2xl font-semibold">
             <span>{getCategoryName(user && user.category)} </span>{" "}
             {user && user.first_name}
-          </h1>
-          <h4 className="mt-1 text-gray-500">2025 | Batch Name</h4>
+          </div>
+          <h4 className="mt-1 text-gray-500">
+            {user.year ? user.year : "XXXX"} |{" "}
+            {user.batch_name ? user.batch_name : "Batch Name"}
+          </h4>
         </div>
 
         <div className="ml-auto">
@@ -23,12 +26,12 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="mt-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-2 gap-x-5">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-x-5">
           <DashboardComponents.CurrentProject />
         </div>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-2">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-7">
           <div className="col-span-1 sm:col-span-2 lg:col-span-3">
             <DashboardComponents.DashboardFeed />
