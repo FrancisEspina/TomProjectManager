@@ -38,7 +38,8 @@ class PostsController < ApplicationController
             user_id: post.user_id,
             first_name: post.user.first_name,  # Assuming User model has a 'name' attribute
             last_name: post.user.last_name,  # Assuming User model has a 'name' attribute
-            username: post.user.username # Assuming User model has an 'email' attribute
+            username: post.user.username, # Assuming User model has an 'email' attribute
+            profile_picture_url: post.user.profile_picture_url
           }
         }
       end

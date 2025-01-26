@@ -4,6 +4,7 @@ import * as Outlined from "@heroicons/react/24/outline";
 import * as Solid from "@heroicons/react/24/solid";
 import LogoutButton from "./../LogoutButton";
 import { Link } from "react-router-dom";
+import { showImage } from "../../api";
 const ProfileMenuItems = (props) => {
   const profileItems = [
     {
@@ -25,12 +26,26 @@ const ProfileMenuItems = (props) => {
 
   return (
     <div>
-      <div className="flex items-center gap-2 m-2">
-        <Solid.UserCircleIcon className="size-12" />
-        <h4>
-          {props.user.first_name} {props.user.last_name}
-          <p className="text-gray-500">{props.user.email}</p>
-        </h4>
+      <div className="flex items-center gap-2 m-2 py-3">
+        {props.user.profile_picture_url ? (
+          <>
+            <img
+              className="size-14 border rounded-full"
+              src={showImage(props.user.profile_picture_url)}
+              alt=""
+            />
+          </>
+        ) : (
+          <>
+            <Solid.UserCircleIcon className="size-12" />
+          </>
+        )}
+        <div>
+          <div className="text-sm lg:text-lg md:text-md font-semibold">
+            {props.user.first_name} {props.user.last_name}
+          </div>
+          <p className="text-gray-500 font-none">{props.user.username}</p>
+        </div>
       </div>
       <hr className="my-3" />
 

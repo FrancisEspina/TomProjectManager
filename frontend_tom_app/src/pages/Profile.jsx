@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-
-import { useSelector } from "react-redux";
-import { getUser, updateUser, updateProfilePic } from "./../api.js";
+import UploadDialog from "../components/ProfileComponents/UploadDialog.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, updateUser, showImage } from "./../api.js";
 import ButtonIcon from "../components/ButtonIcon.jsx";
 import { PencilIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { FaSave } from "react-icons/fa";
 const Profile = () => {
-  const source =
-    "https://plus.unsplash.com/premium_photo-1672201106204-58e9af7a2888?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JhZGllbnR8ZW58MHx8MHx8fDA%3D";
   let [user, setUser] = useState("");
   let [updatedUser, setUpdatedUser] = useState("");
   let [editMode, setEditMode] = useState(false);
   let user_id = useSelector((state) => state.user.user.id);
-
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(false);
 
   function open() {
     setIsOpen(true);
@@ -26,39 +20,11 @@ const Profile = () => {
     setIsOpen(false);
   }
 
-  const handleFileChange = (event) => {
-    const selectedImage = event.target.files[0];
-    setFile(selectedImage);
-
-    const reader = new FileReader();
-    reader.onloadend = () => setPreview(reader.result);
-    reader.readAsDataURL(selectedImage);
-  };
-
-  const handleUploadImage = async (event) => {
-    event.preventDefault();
-    if (!file) {
-      alert("Please select a file to upload.");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("profile_picture", file);
-
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value); // Logs each key and value in the FormData
-    }
-
-    try {
-      const response = await updateProfilePic(formData, user_id);
-      consol.log(response);
-    } catch (error) {}
-  };
-
   const fetchUser = async () => {
     try {
       const userData = await getUser(user_id);
       setUser(userData);
-      console.log(userData);
+      return await userData;
     } catch (error) {}
   };
 
@@ -66,7 +32,6 @@ const Profile = () => {
     try {
       const response = await updateUser(user_id, userData);
       setUser(response.user);
-      // console.log(response);
     } catch (error) {}
   };
 
@@ -113,7 +78,7 @@ const Profile = () => {
               <div className="mb-5">
                 <div className="relative w-36">
                   <img
-                    src={user.profile_picture_url}
+                    src={showImage(user.profile_picture_url)}
                     className="size-36 rounded-full"
                   />
 
@@ -126,7 +91,12 @@ const Profile = () => {
                     <PencilSquareIcon className="size-5" />
                   </button>
 
-                  <UploadDialog isOpen={isOpen} />
+                  <UploadDialog
+                    fetchUser={fetchUser}
+                    isOpen={isOpen}
+                    close={close}
+                    user_id={user_id}
+                  />
                 </div>
               </div>
               <div className="">

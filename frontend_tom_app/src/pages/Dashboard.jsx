@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as api from "./../api";
 import { useSelector } from "react-redux";
 import { getCategoryName } from "../helpers/utils.jsx";
 import * as DashboardComponents from "../components/DashboardComponents/DashboardComponents.jsx";
 const Dashboard = () => {
+  const [latesPost, setLatestPost] = useState(null);
+  useEffect(() => {
+    getLatestPost();
+  }, []);
+
+  const getLatestPost = async () => {
+    const response = await api.getPosts();
+    setLatestPost(response.posts[0]);
+  };
   const user = useSelector((state) => state.user.user);
   return (
     //      <DashboardComponents.CurrentProject />
@@ -22,7 +31,7 @@ const Dashboard = () => {
         </div>
 
         <div className="ml-auto">
-          <DashboardComponents.Clock />
+          <DashboardComponents.Clock time={true} day={true} date={true} />
         </div>
       </div>
       <div className="mt-10">
@@ -34,7 +43,7 @@ const Dashboard = () => {
       <div className="mt-2">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-7">
           <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-            <DashboardComponents.DashboardFeed />
+            <DashboardComponents.DashboardFeed latestPost={latesPost} />
           </div>
 
           <div className="col-span-1 sm:col-span-1 xl:col-span-2">

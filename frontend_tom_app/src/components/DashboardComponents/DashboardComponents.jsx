@@ -8,7 +8,8 @@ import { TiHeartOutline, TiHeart } from "react-icons/ti";
 import IconBox from "./IconBox";
 import ButtonIcon from "../ButtonIcon";
 import { Link } from "react-router-dom";
-import { getUsers } from "../../api";
+import { getAnnouncements, getPosts, getUsers, showImage } from "../../api";
+import { timeAgo } from "../../helpers/utils";
 
 const maxHeight = "max-h-72 overflow-y-auto";
 const minHeight = "min-h-52";
@@ -55,7 +56,7 @@ export const CurrentProject = () => {
                 <HeroOutlined.CalendarIcon className="size-5" />
                 <p>Event Date</p>
               </div>
-              <h4 className="text-sm lg:text-lg">February 14, 2025</h4>
+              <h4 className="text-sm lg:text-[11pt]">February 14, 2025</h4>
             </div>
           </div>
 
@@ -71,7 +72,7 @@ export const CurrentProject = () => {
                 <HeroOutlined.BanknotesIcon className="size-5" />
                 <p>Solicitations</p>
               </div>
-              <h4 className="text-sm lg:text-lg">P 12,302 / P 32,000</h4>
+              <h4 className="text-sm lg:text-[11pt]">P 12,302 / P 32,000</h4>
             </div>
 
             <div className="ml-auto ">
@@ -94,7 +95,7 @@ export const CurrentProject = () => {
                 <HeroOutlined.UsersIcon className="size-5" />
                 <p>My Committee</p>
               </div>
-              <h6 className="text-sm lg:text-lg">Publicity</h6>
+              <h6 className="text-sm lg:text-[11pt]">Publicity</h6>
             </div>
 
             <div className="ml-auto ">
@@ -120,7 +121,7 @@ export const CurrentProject = () => {
                   </>
                 )}
               </div>
-              <h4 className="text-sm lg:text-lg">January 29, 2025</h4>
+              <h4 className="text-sm lg:text-[11pt]">January 29, 2025</h4>
               <p className="text-gray-500">8:00 PM</p>
             </div>
 
@@ -135,6 +136,15 @@ export const CurrentProject = () => {
 };
 
 export const DashBoardAnnouncements = () => {
+  const [announcements, setAnnouncement] = useState();
+  const fetchAnnouncements = async () => {
+    const data = await getAnnouncements();
+    console.log("FETCHHHHH", data.announcements);
+    setAnnouncement(data.announcements);
+  };
+  useEffect(() => {
+    fetchAnnouncements();
+  }, []);
   return (
     <>
       <div className="card-sm cursor-pointer">
@@ -144,36 +154,37 @@ export const DashBoardAnnouncements = () => {
           <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
         </div>
         <hr />
-        <div
-          className={`${maxHeight} ${minHeight} bg-white mt-3 rounded-lg px-1`}
-        >
-          <div className="p-5 hover:bg-gray-100 rounded-xl mb-2">
-            <div className="flex items-center">
-              <HeroSolid.MegaphoneIcon className="size-7 text-red-500 me-1" />
-              <div>
-                <h4>Announcement</h4>
-                <div className="badge badge-green">
-                  <div>Eber Villanobos</div>
+        {announcements &&
+          announcements.map((announcement, i) => (
+            <div
+              key={i}
+              className={`${maxHeight} ${minHeight} bg-white mt-3 rounded-lg px-1`}
+            >
+              <div className="p-5 hover:bg-gray-100 rounded-xl mb-2">
+                <div className="flex items-center">
+                  <HeroSolid.MegaphoneIcon className="size-7 text-red-500 me-1" />
+                  <div>
+                    <h4>{announcement.title}</h4>
+                    <div className="badge badge-green">
+                      <div>{announcement.user.first_name}</div>
+                    </div>
+                  </div>
+                  <div className="ml-auto">
+                    <p>{timeAgo(announcement.created_at)}</p>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <h6>{announcement.content}</h6>
                 </div>
               </div>
-              <div className="ml-auto">
-                <p>1d</p>
-              </div>
             </div>
-            <div className="mt-3">
-              <h6>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Accusantium praesentium labore nihil aut incidunt, tenetur
-              </h6>
-            </div>
-          </div>
-        </div>
+          ))}
       </div>
     </>
   );
 };
 
-export const DashboardFeed = () => {
+export const DashboardFeed = ({ latestPost }) => {
   const handlePostSelect = (event) => {
     event.preventDefault();
     console.log(event);
@@ -184,60 +195,76 @@ export const DashboardFeed = () => {
         <div className="flex items-center mb-3  gap-1 m-1">
           <HeroOutlined.DevicePhoneMobileIcon className="size-5" />
           <p>Feed</p>
-          <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
+
+          <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto   up-right" />
         </div>
 
         <hr />
 
         <div className={`bg-white px-1 mt-3 ${maxHeight} ${minHeight}`}>
-          <div
-            onClick={handlePostSelect}
-            id="post"
-            className="mb-1 rounded-xl border  hover:bg-gray-100 px-5 py-6 "
-          >
-            <div className="flex items-center gap-1">
-              <HeroSolid.UserCircleIcon className="size-10 text-gray-400" />
-              <div>
-                <h5>Jhoe Leil Adel</h5>
-                <h6 className="text-gray-700">@samyang</h6>
-              </div>
-              <p className="ml-auto">1d</p>
-            </div>
+          {/* {latestPost && JSON.stringify(latestPost)} */}
 
-            <div className="my-3 px-3">
-              <p>SHEESSHH 🫥🫥</p>
-            </div>
-            <br />
-            <div className="">
-              <div className="flex gap-1 items-center">
-                <TiHeart color="red" size={20} />
-                <h5>
-                  <b>24</b>
-                </h5>
-              </div>
-            </div>
+          {latestPost ? (
+            <>
+              <div
+                onClick={handlePostSelect}
+                id="post"
+                className="mb-1 rounded-xl border  hover:bg-gray-100 px-5 py-6 "
+              >
+                <div className="flex items-center gap-1">
+                  {latestPost.user.profile_picture_url ? (
+                    <>
+                      <img
+                        className="size-10 rounded-full"
+                        src={showImage(latestPost.user.profile_picture_url)}
+                        alt=""
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <HeroSolid.UserCircleIcon className="size-10 text-gray-400" />
+                    </>
+                  )}
+                  <div>
+                    <h5 className="font-semibold">
+                      {latestPost.user.first_name} {latestPost.user.last_name}
+                    </h5>
+                    <h6 className="text-gray-700">
+                      {latestPost.user.username}
+                    </h6>
+                  </div>
+                  <p className="ml-auto">{timeAgo(latestPost.created_at)}</p>
+                </div>
 
-            <div className="flex gap-1 justify-center w-full mt-2">
-              <ButtonIcon
-                width="w-full"
-                text="Like"
-                color="bg-gray-100"
-                icon={TiHeartOutline}
-              />
-              <ButtonIcon
-                width="w-full"
-                text="Comment"
-                color="bg-gray-100"
-                icon={FaRegComment}
-              />
-              <ButtonIcon
-                width="w-full"
-                text="Share"
-                color="bg-gray-100"
-                icon={FiRepeat}
-              />
-            </div>
-          </div>
+                <div className="my-4 px-3">
+                  <h5>{latestPost.content}</h5>
+                </div>
+                <br />
+                <div className="">
+                  <div className="flex gap-1 items-center">
+                    <TiHeart color="red" size={20} />
+                    <h5>
+                      <b>24</b>
+                    </h5>
+                  </div>
+                </div>
+
+                <div className="flex gap-1 justify-between max-w-96 m-[auto] mt-2">
+                  <ButtonIcon color="bg-gray-100" icon={FaRegComment} />
+                  <ButtonIcon color="bg-gray-100" icon={FiRepeat} />
+                  <ButtonIcon color="bg-gray-100" icon={TiHeartOutline} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="">
+                <div className="h-52 flex justify-center items-center">
+                  <p>NO POST</p>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="">
             <button className="w-full hover:bg-gray-200 gap-1 hover:text-black bg-transparent flex items-center justify-center">
@@ -286,7 +313,7 @@ export const DashboardResidents = () => {
                 <div>
                   <img
                     className="rounded-full size-8"
-                    src={user.profile_picture_url}
+                    src={showImage(user.profile_picture_url)}
                     alt=""
                   />
                 </div>
@@ -322,12 +349,10 @@ export const DashboardResidents = () => {
   );
 };
 
-export const Clock = ({
-  format = "HH:mm:ss:ms",
-  showDate = true,
-  style = {},
-  updateInterval = 1000,
-}) => {
+export const Clock = (
+  props,
+  { format = "HH:mm:ss:ms", showDate = true, style = {}, updateInterval = 1000 }
+) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -366,12 +391,16 @@ export const Clock = ({
 
   return (
     <div className="text-end hidden lg:block md:block">
-      <h5>{getFormattedDay()}</h5>
-      <h2 className="text-amber-500 font-semibold">{getFormattedTime()}</h2>
-      <h5 className="flex items-center">
-        <HeroOutlined.CalendarDaysIcon className="size-5 me-1" />
-        {getFormattedDate()}
-      </h5>
+      {props.day && <h5>{getFormattedDay()}</h5>}
+      {props.time && (
+        <h2 className="text-amber-500 font-semibold">{getFormattedTime()}</h2>
+      )}
+      {props.date && (
+        <h5 className="flex justify-end items-center">
+          <HeroOutlined.CalendarDaysIcon className="size-5 me-1" />
+          {getFormattedDate()}
+        </h5>
+      )}
     </div>
   );
 };

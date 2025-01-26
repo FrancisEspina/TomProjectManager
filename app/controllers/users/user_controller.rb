@@ -5,13 +5,7 @@ class Users::UserController < ApplicationController
   @users = User.all
 
     if @users.any?
-      users = @users.map do |user|
-        user.as_json.merge(
-          profile_picture_url: user.profile_picture.attached? ? url_for(user.profile_picture) : nil
-        )
-      end
-
-      render json: { users: users }, status: :ok
+      render json: { users: @users }, status: :ok
     else
       render json: { message: "No users found" }, status: :not_found
     end
@@ -21,10 +15,8 @@ def show
   @user = authenticate_user_id_with_token
 
   if @user && @user.id == params[:id].to_i
-    user_data = @user.as_json # Serialize all user attributes dynamically
-    user_data[:profile_picture_url] = @user.profile_picture.attached? ? url_for(@user.profile_picture) : nil
 
-    render json: { user: user_data }, status: :ok
+    render json: { user: @user }, status: :ok
   else
     render json: { message: "No user found" }, status: :not_found
   end
@@ -49,14 +41,19 @@ def upload_profile_picture
   user = User.find(params[:id])
 
   if params[:profile_picture].present?
-    user.profile_picture.attach(params[:profile_picture]) # Use Active Storage's `attach` method
-    if user.save
-      render json: { 
-        message: "Profile Picture Uploaded", 
-      }, status: :ok
-    else
-      render json: { error: "Failed to save user" }, status: :unprocessable_entity
-    end
+    user.profile_picture.attach(params[:profile_picture]) # Attach the new profile picture
+    # Get the relative path of the profile picture
+    profile_picture_path = Rails.application.routes.url_helpers.rails_blob_path(user.profile_picture, only_path: true)
+    user.profile_picture_url = profile_picture_path
+    user.save
+    # Optional: Save the relative path in the database if needed
+    # user.update(profile_picture_url: profile_picture_path)
+
+    render json: {
+      user: user, 
+      message: "Profile Picture Uploaded", 
+      profile_picture_path: profile_picture_path 
+    }, status: :ok
   else
     render json: { error: "No profile picture provided" }, status: :bad_request
   end

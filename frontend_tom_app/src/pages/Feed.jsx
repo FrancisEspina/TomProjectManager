@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { createPost, getPosts } from "../api";
+import { createPost, getPosts, showImage } from "../api";
 import { PaperAirplaneIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { timeAgo } from "../helpers/utils";
 import { FaRegComment } from "react-icons/fa";
@@ -8,7 +8,8 @@ import { TiHeartOutline } from "react-icons/ti";
 import { useSelector } from "react-redux";
 
 const Feed = () => {
-  const user_id = useSelector((state) => state.user.user.id);
+  const current_user = useSelector((state) => state.user.user);
+  const user_id = current_user.id;
   const textareaRef = useRef(null);
 
   const [userPost, setUserPost] = useState(""); // Only store the content, not user_id here
@@ -56,8 +57,9 @@ const Feed = () => {
 
   return (
     <>
-      <h3 className="text-gray-500">TΩM Feed</h3>
-      <h1 className="text-gray-400 mb-5">
+      <h3 className="text-gray-500">TΩM FEED</h3>
+      <h1 className="text-gray-400 mb-5 flex justify-center items-center flex-col">
+        <img className="size-10" src="tomlogo.png" alt="" />
         <b>Ano't Chika?</b>
       </h1>
 
@@ -65,7 +67,18 @@ const Feed = () => {
         <form onSubmit={handleSendPost}>
           <div className="border px-5 pt-7 m-[auto] max-w-xl">
             <div className="flex gap-1">
-              <UserCircleIcon className="size-12 text-gray-500" />
+              {current_user.profile_picture_url ? (
+                <>
+                  <img
+                    className="size-12 rounded-full"
+                    src={showImage(current_user.profile_picture_url)}
+                  />
+                </>
+              ) : (
+                <>
+                  <UserCircleIcon className="size-12 text-gray-500" />
+                </>
+              )}
               <textarea
                 ref={textareaRef}
                 placeholder="What's the Tea? ☕"
@@ -95,7 +108,19 @@ const Feed = () => {
             className="border cursor-pointer hover:bg-gray-200 px-5 pt-7 m-[auto] max-w-xl"
           >
             <div className="flex gap-1 items-center">
-              <UserCircleIcon className="size-12 text-gray-500" />
+              {true ? (
+                <>
+                  <img
+                    className="size-12 rounded-full"
+                    src={showImage(post.user.profile_picture_url)}
+                    alt=""
+                  />
+                </>
+              ) : (
+                <>
+                  <UserCircleIcon className="size-12 text-gray-500" />
+                </>
+              )}
               <div>
                 <h5>
                   <b>

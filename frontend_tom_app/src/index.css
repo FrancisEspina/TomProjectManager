@@ -73,7 +73,7 @@ button:hover {
 }
 
 button,
-input:not([type="radio"]) {
+input:not([type="radio"]):not([type="range"]) {
   padding: 10px;
   border-radius: 12px;
   font-size: 9pt;
@@ -86,7 +86,7 @@ input:not([type="radio"]) {
   /* outline: 1px solid rgb(168, 168, 168) !important; */
 }
 
-input:not([type="radio"]):focus {
+input:not([type="radio"]):not([type="range"]):focus {
   outline: 3px solid rgb(255, 214, 32) !important; /* Change to your preferred color */
   outline-offset: 2px;
 }
@@ -179,4 +179,21 @@ input:not([type="radio"]):focus {
   max-height: 300px; /* Optional maximum height */
   overflow-y: auto; /* Show scroll when max height is reached */
   resize: none; /* Disable manual resizing */
+}
+
+.crop-container {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+}
+
+.controls {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  width: 50%;
+  transform: translateX(-50%);
+  height: 80px;
+  display: flex;
+  align-items: center;
 }

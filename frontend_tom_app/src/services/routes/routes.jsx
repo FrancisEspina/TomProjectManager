@@ -5,12 +5,13 @@ import NavBar from "./../../components/NavBar.jsx";
 import { createBrowserRouter } from "react-router-dom";
 import * as api from "./../../api";
 import Login from "./../../pages/Login";
+import Execomm from "./../../pages/Execomm.jsx";
 import Dashboard from "./../../pages/Dashboard";
 import Profile from "./../../pages/Profile";
 import Register from "./../../pages/Register";
+import Announcements from "./../../pages/ExecommComponents/Announcements.jsx";
 import Feed from "./../../pages/Feed";
 import ProtectedRoute from "./../../components/ProtectedRoute";
-import { useSelector } from "react-redux";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -50,7 +51,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/execomm",
-        element: <div>Execomm</div>,
+        element: <Execomm />,
+      },
+      {
+        path: "/execomm/announcements",
+        element: <Announcements />,
       },
       {
         path: "/about",

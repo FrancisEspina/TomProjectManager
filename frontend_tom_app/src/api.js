@@ -1,7 +1,8 @@
 import axios from "axios";
 import { persistor } from "./services/store/Store.js";
 
-const API_URL = "http://192.168.1.5:3000";
+const API_URL = "http://192.168.1.3:3000";
+// const API_URL = "http://localhost:3000";
 
 const axiosInstance = axios.create({
   baseURL: API_URL, // Rails API URL
@@ -196,8 +197,8 @@ export const updateProfilePic = async (formData, userId) => {
     console.log(formData); // Log the FormData contents for debugging
 
     const response = await axios.patch(
-      `${API_URL}/users/user/${userId}/upload_profile_picture`, 
-      formData, 
+      `${API_URL}/users/user/${userId}/upload_profile_picture`,
+      formData,
       {
         headers: {
           "Content-Type": "multipart/form-data", // Required for file uploads
@@ -215,4 +216,18 @@ export const updateProfilePic = async (formData, userId) => {
     );
     throw error; // Re-throw the error for further handling
   }
+};
+
+export const getAnnouncements = async () => {
+  try {
+    const response = await axiosInstance.get("/announcements", {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+    return response.data;
+  } catch (error) {}
+};
+export const showImage = (path) => {
+  return path ? API_URL + path : null;
 };

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     end
   end
     resources :posts, only: [:index, :create]
+    resources :announcements, only: [:index]
 
 
   
