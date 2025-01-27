@@ -1,8 +1,8 @@
 import axios from "axios";
 import { persistor } from "./services/store/Store.js";
 
-const API_URL = "http://192.168.1.3:3000";
-// const API_URL = "http://localhost:3000";
+// const API_URL = "http://192.168.1.3:3000";
+const API_URL = "http://localhost:3000";
 
 const axiosInstance = axios.create({
   baseURL: API_URL, // Rails API URL

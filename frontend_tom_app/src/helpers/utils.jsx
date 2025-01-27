@@ -41,8 +41,7 @@ export function timeAgo(createdAt) {
   } else {
     // If the difference is more than a day, format and display the date
     return createdDate.toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
     });
   }

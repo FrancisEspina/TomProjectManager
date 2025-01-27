@@ -1,8 +1,12 @@
 import {
+  AdjustmentsHorizontalIcon,
   ArrowRightIcon,
   BriefcaseIcon,
+  CalendarDateRangeIcon,
   MegaphoneIcon,
   PhoneIcon,
+  QueueListIcon,
+  UserCircleIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
@@ -10,6 +14,7 @@ import { LiaGoogleDrive } from "react-icons/lia";
 import { BiBullseye } from "react-icons/bi";
 import Calendar from "./ExecommComponents/Calendar";
 import ProjectProgress from "./ExecommComponents/ProjectProgress";
+import { FaNotesMedical } from "react-icons/fa6";
 
 const Execomm = () => {
   const widgets = [
@@ -24,6 +29,8 @@ const Execomm = () => {
   return (
     <>
       <h3 className="text-gray-500">EXECΩMM </h3>
+      <br />
+      <Section title={"General Tasks"} IconName={QueueListIcon} />
       <div className="relative" style={{ height: "calc(100vh - 120px)" }}>
         <div className=" h-full">
           <div className="grid grid-cols-1">
@@ -47,18 +54,40 @@ const Execomm = () => {
             <br />
             <hr />
             <br />
-
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               <div>
+                <Section
+                  title={"Project Progress"}
+                  IconName={AdjustmentsHorizontalIcon}
+                />
                 <ProjectProgress />
               </div>
-
               <div>
+                <Section title={"Schedules"} IconName={CalendarDateRangeIcon} />
+
                 <Calendar />
               </div>
             </div>
+            <br />
+            <hr />
+            <br />
           </div>
         </div>
+      </div>
+    </>
+  );
+};
+
+const Section = ({ title, IconName }) => {
+  return (
+    <>
+      <div className="flex items-center gap-1 mb-4 ">
+        {IconName && (
+          <>
+            <IconName className="size-6 text-gray-400" />
+          </>
+        )}
+        <div className="text-gray-400 text-lg">{title && title}</div>
       </div>
     </>
   );

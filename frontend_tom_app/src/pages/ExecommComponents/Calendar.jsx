@@ -1,7 +1,28 @@
 import React from "react";
 import { Clock } from "../../components/DashboardComponents/DashboardComponents";
-
+import {
+  format,
+  compareAsc,
+  startOfDay,
+  startOfToday,
+  eachDayOfInterval,
+  startOfMonth,
+  endOfMonth,
+  endOfWeek,
+  startOfWeek,
+} from "date-fns";
+import { CalendarDateRangeIcon } from "@heroicons/react/24/outline";
+import { BiCalendarWeek } from "react-icons/bi";
 const Calendar = () => {
+  let today = startOfToday();
+  let newDays = eachDayOfInterval({
+    start: startOfWeek(startOfMonth(today)),
+    end: endOfWeek(endOfMonth(today)),
+  });
+  const daysOfTheWeek = ["S", "M", "T", "W", "Th", "F", "S"];
+
+  console.log(newDays);
+
   return (
     <>
       <div className="bg-white p-5  rounded-2xl">
@@ -18,7 +39,7 @@ const Calendar = () => {
             </div>
 
             <div>
-              <p>Semester</p>
+              <p className="text-gray-500">Semester</p>
               <h3>
                 <b>1st Sem</b>
               </h3>
@@ -29,6 +50,43 @@ const Calendar = () => {
             </div>
           </div>
           <br />
+
+          <div>
+            <div className="flex items-center gap-1 border text-gray-800 w-fit p-3 rounded-xl mb-1">
+              <BiCalendarWeek className="size-5" />
+              <h5>{format(today, "MMMM yyyy")}</h5>
+            </div>
+            <div className="border rounded-xl p-5 grid grid-cols-7 text-sm">
+              <div className="col-span-7 mb-3">
+                <div className="grid grid-cols-7 text-sm text-center">
+                  {daysOfTheWeek.map((day, index) => (
+                    <div key={index}>
+                      <b>{day}</b>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {newDays.map((date, dayIdx) => (
+                <div
+                  className={`relative flex justify-center items-center overflow-hidden p-3 rounded-lg m-[2px] border text-[7pt] lg:text-[10pt] hover:bg-gray-200 cursor-pointer ${
+                    format(date, "MMM") != format(today, "MMM") &&
+                    "bg-gray-100 text-gray-400"
+                  }`}
+                >
+                  {/* <div className="px-1 lg:px-2 py-1 bg-amber-500 absolute rounded-xl top-1 right-1 z-10"></div> */}
+
+                  <div
+                    className={`${
+                      today == date.toString() &&
+                      "lg:bg-blue-500 text-white rounded-full absolute size-32 lg:size-6 md:size-6  bg-blue-400"
+                    }   size-6 flex items-center justify-center`}
+                  >
+                    {format(date, "d")}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>

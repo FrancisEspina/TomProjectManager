@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as Outlined from "@heroicons/react/24/outline";
 import logo from "./../assets/tomlogo.png";
 import { Link, useLocation } from "react-router-dom";
+import { Tooltip } from "@mui/material";
 
 const SideNav = ({ onLinkClick }) => {
   const [open, setOpen] = useState(true);
@@ -100,25 +101,26 @@ const SideNav = ({ onLinkClick }) => {
           <div className="mt-10">
             <div className="mt-4 flex flex-col gap-2 relative  ">
               {navItems.map((item, i) => (
-                <Link
-                  onClick={onLinkClick}
-                  key={i}
-                  to={item.path}
-                  className={`flex  items-center text-sm p-3 rounded-xl ${
-                    location.pathname === item.path
-                      ? "text-white bg-amber-500"
-                      : "text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  <item.icon className="size-5"></item.icon>
-                  <div
-                    className={`overflow-hidden transition  ${
-                      open ? "ms-3 w-32" : "w-0 "
+                <Tooltip key={i} title={!open && item.name} placement="right">
+                  <Link
+                    onClick={onLinkClick}
+                    to={item.path}
+                    className={`flex  items-center text-sm p-3 rounded-xl ${
+                      location.pathname === item.path
+                        ? "text-white bg-amber-500"
+                        : "text-gray-600 hover:bg-gray-200"
                     }`}
                   >
-                    <div>{open && item.name}</div>
-                  </div>
-                </Link>
+                    <item.icon className="size-5"></item.icon>
+                    <div
+                      className={`overflow-hidden transition  ${
+                        open ? "ms-3 w-32" : "w-0 "
+                      }`}
+                    >
+                      <div>{open && item.name}</div>
+                    </div>
+                  </Link>
+                </Tooltip>
               ))}
             </div>
           </div>
