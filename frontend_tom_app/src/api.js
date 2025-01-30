@@ -1,7 +1,7 @@
 import axios from "axios";
 import { persistor } from "./services/store/Store.js";
 
-// const API_URL = "http://192.168.1.3:3000";
+// const API_URL = "http://192.168.1.7:3000";
 const API_URL = "http://localhost:3000";
 
 const axiosInstance = axios.create({
@@ -230,4 +230,41 @@ export const getAnnouncements = async () => {
 };
 export const showImage = (path) => {
   return path ? API_URL + path : null;
+};
+
+export const createHearts = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/hearts",
+      {
+        id: payload.user_id,
+        post_id: payload.post_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+    return response.data.hearted;
+  } catch (error) {
+    throw error.response.data.hearted;
+  }
+};
+
+export const getHearts = async (user_id) => {
+  try {
+    const response = await axiosInstance.get(
+      `/hearts/${user_id}/get_user_hearts`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
 };

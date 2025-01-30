@@ -197,3 +197,11 @@ input:not([type="radio"]):not([type="range"]):focus {
   display: flex;
   align-items: center;
 }
+
+.zoom {
+  transition: transform 0.2s ease !important; /* Smooth movement */
+}
+
+.zoom:hover {
+  transform: scale(1.5) !important;
+}

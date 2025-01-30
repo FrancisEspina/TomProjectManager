@@ -1,5 +1,11 @@
 import React from "react";
 import { Clock } from "../../components/DashboardComponents/DashboardComponents";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
 import {
   format,
   compareAsc,
@@ -11,7 +17,7 @@ import {
   endOfWeek,
   startOfWeek,
 } from "date-fns";
-import { CalendarDateRangeIcon } from "@heroicons/react/24/outline";
+import { CalendarDateRangeIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { BiCalendarWeek } from "react-icons/bi";
 const Calendar = () => {
   let today = startOfToday();
@@ -20,13 +26,18 @@ const Calendar = () => {
     end: endOfWeek(endOfMonth(today)),
   });
   const daysOfTheWeek = ["S", "M", "T", "W", "Th", "F", "S"];
+  let events = [
+    { name: "Execomm Meeting", time: "4:00 PM" },
+    { name: "SAGSAR Meeting", time: "8:00 PM" },
+    { name: "Pungag", time: "10:00 PM" },
+  ];
 
   console.log(newDays);
 
   return (
     <>
       <div className="bg-white p-5  rounded-2xl">
-        <div>
+        <div className="mb-5">
           <div className="mb-2">
             <p>Calendar</p>
           </div>
@@ -68,7 +79,8 @@ const Calendar = () => {
               </div>
               {newDays.map((date, dayIdx) => (
                 <div
-                  className={`relative flex justify-center items-center overflow-hidden p-3 rounded-lg m-[2px] border text-[7pt] lg:text-[10pt] hover:bg-gray-200 cursor-pointer ${
+                  key={dayIdx}
+                  className={`relative flex justify-center items-center overflow-hidden p-3 rounded-xl m-[1px] border text-[7pt] lg:text-[10pt] hover:bg-gray-200 cursor-pointer ${
                     format(date, "MMM") != format(today, "MMM") &&
                     "bg-gray-100 text-gray-400"
                   }`}
@@ -86,6 +98,48 @@ const Calendar = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+        <div className="mt-5">
+          <p className="text-gray-500">Today</p>
+          <h2>{format(today, "MMM d yyy")}</h2>
+
+          <br />
+
+          <div>
+            <Timeline
+              sx={{
+                [`& .${timelineItemClasses.root}:before`]: {
+                  fontFamily: "Poppins",
+                  flex: 0,
+                  padding: 0,
+                },
+              }}
+            >
+              {events.map((event, idx) => (
+                <>
+                  <TimelineItem>
+                    <TimelineSeparator>
+                      <TimelineDot variant="outlined" />
+                      {events.length > idx + 1 && <TimelineConnector />}
+                    </TimelineSeparator>
+                    <TimelineContent>
+                      <div style={{ fontFamily: "Poppins" }}>
+                        <h5>
+                          <div className="font-semibold">
+                            {event.name && event.name}
+                          </div>
+                        </h5>
+                        <div className="flex items-center gap-1">
+                          <ClockIcon className="size-4 text-gray-500" />
+                          <h5>{event.time && event.time}</h5>
+                        </div>
+                      </div>
+                    </TimelineContent>
+                  </TimelineItem>
+                </>
+              ))}
+            </Timeline>
           </div>
         </div>
       </div>

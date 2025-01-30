@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   end
     resources :posts, only: [:index, :create]
     resources :announcements, only: [:index]
+    resources :hearts, only: [:create] do
+      member do
+        get :get_user_hearts
+      end
+    end
 
 
   

@@ -30,15 +30,15 @@ const ProjectProgress = () => {
 
   return (
     <>
-      <div className="bg-white p-5  rounded-2xl">
-        <div className="flex items-center justify-between mb-2">
+      <div className="bg-white p-5 rounded-2xl ">
+        <div className="flex items-center justify-between mb-2 ">
           <div className="mb-2">
             <p>Project Status</p>
           </div>
 
           <ButtonIcon text="Add Project" icon={PlusIcon} />
         </div>
-        <div className="">
+        <div className="h-[305px] px-2 overflow-y-auto">
           {projects.map((project, i) => (
             <div
               key={i}

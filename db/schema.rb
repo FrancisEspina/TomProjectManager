@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_25_151211) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_29_212332) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,6 +67,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_25_151211) do
     t.index ["resource_owner_type", "resource_owner_id"], name: "index_devise_api_tokens_on_resource_owner"
   end
 
+  create_table "hearts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_hearts_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_hearts_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_hearts_on_user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "content"
@@ -102,5 +112,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_25_151211) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "announcements", "users"
+  add_foreign_key "hearts", "posts"
+  add_foreign_key "hearts", "users"
   add_foreign_key "posts", "users"
 end

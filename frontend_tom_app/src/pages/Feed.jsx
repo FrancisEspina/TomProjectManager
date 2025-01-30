@@ -1,19 +1,36 @@
 import React, { useEffect, useState, useRef } from "react";
-import { createPost, getPosts, showImage } from "../api";
+import {
+  createPost,
+  getPosts,
+  showImage,
+  createHearts,
+  getHearts,
+} from "../api";
 import { PaperAirplaneIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { timeAgo } from "../helpers/utils";
 import { FaRegComment } from "react-icons/fa";
 import { FiAirplay, FiRepeat, FiSend } from "react-icons/fi";
-import { TiHeartOutline } from "react-icons/ti";
+import { TiHeart, TiHeartOutline } from "react-icons/ti";
 import { useSelector } from "react-redux";
 
 const Feed = () => {
   const current_user = useSelector((state) => state.user.user);
   const user_id = current_user.id;
   const textareaRef = useRef(null);
-
+  const [heartAdded, setHeartAdded] = useState(false);
   const [userPost, setUserPost] = useState(""); // Only store the content, not user_id here
   const [posts, setPosts] = useState([]);
+  const [hearts, setHearts] = useState([]);
+
+  const handleHeartClick = async (post) => {
+    try {
+      const response = await createHearts({ post_id: post.id, user_id });
+      console.log(response);
+      setHeartAdded((prev) => !prev);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Handling the input and adjusting the height of the textarea
   const handleInput = (event) => {
@@ -50,10 +67,20 @@ const Feed = () => {
     setPosts(response.posts);
   };
 
+  const getUserHearts = async (user_id) => {
+    const response = await getHearts(user_id);
+    setHearts(response.hearts);
+  };
+
   // Load posts on mount and whenever a new post is created
   useEffect(() => {
-    getAllPosts();
-  }, []); // Empty dependency array so it runs only once
+    const fetchData = async () => {
+      await getAllPosts();
+      await getUserHearts(user_id);
+    };
+
+    fetchData();
+  }, [heartAdded]); // Runs when `heartAdded` changes
 
   return (
     <>
@@ -88,7 +115,6 @@ const Feed = () => {
                 style={{ height: "50px" }} // Initial height
               ></textarea>
             </div>
-
             <br />
             <hr />
 
@@ -149,8 +175,19 @@ const Feed = () => {
               <button className="bg-transparent hover:bg-gray-300 border">
                 <FiRepeat className="size-4" />
               </button>
-              <button className="bg-transparent hover:bg-gray-300 border">
-                <TiHeartOutline className="size-4" />
+              <button
+                onClick={() => {
+                  handleHeartClick(post);
+                }}
+                className="bg-transparent  hover:bg-gray-300 border group"
+              >
+                <div className="group-hover:transition">
+                  {!hearts.map((heart) => heart.post_id).includes(post.id) ? (
+                    <TiHeartOutline color="" className="size-4" />
+                  ) : (
+                    <TiHeart color="red" className="size-4" />
+                  )}
+                </div>
               </button>
             </div>
           </div>
