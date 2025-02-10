@@ -5,6 +5,7 @@ import {
   showImage,
   createHearts,
   getHearts,
+  deleteHearts,
 } from "../api";
 import { PaperAirplaneIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { timeAgo } from "../helpers/utils";
@@ -23,12 +24,30 @@ const Feed = () => {
   const [hearts, setHearts] = useState([]);
 
   const handleHeartClick = async (post) => {
-    try {
-      const response = await createHearts({ post_id: post.id, user_id });
-      console.log(response);
-      setHeartAdded((prev) => !prev);
-    } catch (error) {
-      console.log(error);
+    let included = hearts.map((heart) => heart.post_id).includes(post.id);
+
+    if (!included) {
+      try {
+        const response = await createHearts({
+          post_id: post.id,
+          user_id: user_id,
+        });
+        console.log(response);
+        setHeartAdded((prev) => !prev);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await deleteHearts({
+          post_id: post.id,
+          user_id: user_id,
+        });
+        // console.log(response);
+        setHeartAdded((prev) => !prev);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

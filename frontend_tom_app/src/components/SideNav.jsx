@@ -126,7 +126,7 @@ const SideNav = ({ onLinkClick }) => {
           </div>
 
           <div className={`fixed bottom-5 text-gray-500`}>
-            <p>Copyright © 2025 Francis Espiña</p>
+            {open && <p>Copyright © 2025 Francis Espiña</p>}
           </div>
         </nav>
       </aside>

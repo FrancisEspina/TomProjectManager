@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import * as Calendar from "./ExecommComponents/Calendar";
 import * as api from "./../api";
 import { useSelector } from "react-redux";
 import { getCategoryName } from "../helpers/utils.jsx";
 import * as DashboardComponents from "../components/DashboardComponents/DashboardComponents.jsx";
+import { FaCalendar } from "react-icons/fa";
+import { CalendarDateRangeIcon } from "@heroicons/react/24/outline";
 const Dashboard = () => {
   const [latesPost, setLatestPost] = useState(null);
   useEffect(() => {
@@ -40,23 +43,57 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="mt-2">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-7">
-          <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-            <DashboardComponents.DashboardFeed latestPost={latesPost} />
-          </div>
+      <div className="mt-2 flex flex-wrap gap-3 ">
+        <div className="flex-auto lg:basis-1/3 basis-1/2">
+          <DashboardComponents.DashBoardAnnouncements />
+        </div>
+        <div className="flex-auto lg:basis-1/3 basis-1/2">
+          <DashboardComponents.DashBoardPoll />
+        </div>
+        <div className="flex-auto lg:basis-auto basis-1/2 ">
+          <DashboardComponents.DashboardResidents />
+        </div>
 
-          <div className="col-span-1 sm:col-span-1 xl:col-span-2">
-            <DashboardComponents.DashBoardAnnouncements />
-          </div>
+        <div className="flex-auto lg:basis-1/2 basis-1/2">
+          <DashboardComponents.DashboardFeed latestPost={latesPost} />
+        </div>
 
-          <div className="col-span-1 sm:col-span-1 lg:col-span-2">
-            <DashboardComponents.DashboardResidents />
+        <div className="flex-auto">
+          <div className="card-sm">
+            <DashboardComponents.CardTitle
+              title="Calendar"
+              IconName={CalendarDateRangeIcon}
+            />
+            <hr />
+            <div className="mt-3">
+              <Calendar.Dates />
+            </div>
           </div>
         </div>
       </div>
+      <br />
     </div>
   );
 };
 
 export default Dashboard;
+
+// <div className="mt-2">
+//   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-7">
+//     <div className="col-span-1 sm:col-span-2 lg:col-span-3 lg:order-first">
+//       <DashboardComponents.DashboardFeed latestPost={latesPost} />
+//       <br />
+//       <DashboardComponents.DashBoardPoll />
+//     </div>
+
+//     <div className="col-span-1 sm:col-span-1 xl:col-span-2 order-first lg:order-1">
+//       <DashboardComponents.DashBoardAnnouncements />
+//       <br />
+//       <DashboardComponents.DashBoardPoll />
+//     </div>
+
+//     <div className="col-span-1 sm:col-span-1 lg:col-span-2 lg:order-last">
+//       <DashboardComponents.DashboardResidents />
+//     </div>
+//   </div>
+// </div>;

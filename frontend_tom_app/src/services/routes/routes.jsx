@@ -8,8 +8,9 @@ import Login from "./../../pages/Login";
 import Execomm from "./../../pages/Execomm.jsx";
 import Dashboard from "./../../pages/Dashboard";
 import Profile from "./../../pages/Profile";
+import About from "./../../pages/About.jsx";
 import Register from "./../../pages/Register";
-import Announcements from "./../../pages/ExecommComponents/Announcements.jsx";
+import Bulletin from "../../pages/ExecommComponents/Bulletin.jsx";
 import Feed from "./../../pages/Feed";
 import ProtectedRoute from "./../../components/ProtectedRoute";
 export const router = createBrowserRouter([
@@ -46,6 +47,7 @@ export const router = createBrowserRouter([
         element: <div>Schedules</div>,
       },
       {
+        name: "allResidents",
         path: "/residents",
         element: <div>Residents</div>,
       },
@@ -54,12 +56,17 @@ export const router = createBrowserRouter([
         element: <Execomm />,
       },
       {
-        path: "/execomm/announcements",
-        element: <Announcements />,
+        name: "bulletin",
+        path: "/execomm/bulletin",
+        element: <Bulletin />,
       },
       {
         path: "/about",
-        element: <div>About</div>,
+        element: (
+          <div>
+            <About />
+          </div>
+        ),
       },
       {
         path: "/tomlympics",

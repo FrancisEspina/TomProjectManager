@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import * as HeroOutlined from "@heroicons/react/24/outline";
 import * as HeroSolid from "@heroicons/react/24/solid";
-import { FaCircle, FaHandshake, FaRegComment } from "react-icons/fa";
+import { FaCircle, FaHandshake, FaPoll, FaRegComment } from "react-icons/fa";
 import { FiRepeat } from "react-icons/fi";
 import { FaHandshakeAngle } from "react-icons/fa6";
 import { TiHeartOutline, TiHeart } from "react-icons/ti";
 import IconBox from "./IconBox";
 import ButtonIcon from "../ButtonIcon";
 import { Link } from "react-router-dom";
-import { getAnnouncements, getPosts, getUsers, showImage } from "../../api";
+import { getAnnouncements, getPolls, getUsers, showImage } from "../../api";
 import { timeAgo } from "../../helpers/utils";
+import { BiPoll } from "react-icons/bi";
+import BorderLinearProgress from "../BorderLinearProgress";
 
-const maxHeight = "max-h-72 overflow-y-auto";
-const minHeight = "min-h-52";
+const maxHeight = "max-h-[295px] overflow-y-auto";
+const minHeight = "min-h-[100px]";
+const minWidth = "min-w-[300px]";
 export const CurrentProject = () => {
   return (
     <>
@@ -147,38 +150,48 @@ export const DashBoardAnnouncements = () => {
   }, []);
   return (
     <>
-      <div className="card-sm cursor-pointer">
-        <div className="flex items-center gap-1 m-1 mb-3">
-          <HeroOutlined.MegaphoneIcon className="size-5" />
-          <p>Announcements</p>
-          <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
-        </div>
+      <div className={`card-sm cursor-pointer`}>
+        <CardTitle
+          title="Announcements"
+          IconName={HeroOutlined.MegaphoneIcon}
+        />
         <hr />
-        {announcements &&
-          announcements.map((announcement, i) => (
-            <div
-              key={i}
-              className={`${maxHeight} ${minHeight} bg-white mt-3 rounded-lg px-1`}
-            >
-              <div className="p-5 hover:bg-gray-100 rounded-xl mb-2">
-                <div className="flex items-center">
-                  <HeroSolid.MegaphoneIcon className="size-7 text-red-500 me-1" />
-                  <div>
-                    <h4>{announcement.title}</h4>
-                    <div className="badge badge-green">
-                      <div>{announcement.user.first_name}</div>
+        <div className={`mt-3 ${maxHeight}`}>
+          {announcements &&
+            announcements.map((announcement, i) => (
+              <div
+                key={i}
+                className={`${maxHeight} ${minHeight} bg-white  rounded-lg px-1`}
+              >
+                <div className="p-5 hover:bg-gray-100 rounded-xl mb-1">
+                  <div className="flex items-center">
+                    <HeroSolid.MegaphoneIcon className="size-7 text-red-500 me-1" />
+                    <div>
+                      <div className="text-sm">{announcement.title}</div>
+                      <div className="text-[8pt] text-gray-800  w-fit   py-[2px]">
+                        <div>By: {announcement.user.first_name}</div>
+                      </div>
+                    </div>
+                    <div className="ml-auto">
+                      <p>{timeAgo(announcement.created_at)}</p>
                     </div>
                   </div>
-                  <div className="ml-auto">
-                    <p>{timeAgo(announcement.created_at)}</p>
+                  <div className="mt-3">
+                    <h6>{announcement.content}</h6>
                   </div>
-                </div>
-                <div className="mt-3">
-                  <h6>{announcement.content}</h6>
+
+                  {announcement.poll && (
+                    <div className="mt-2 ">
+                      <button className="flex items-center w-full justify-center bg-transparent hover:bg-gray-300 hover:text-black">
+                        <FaPoll size={15} />
+                        <h5>View Poll</h5>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
     </>
   );
@@ -192,12 +205,7 @@ export const DashboardFeed = ({ latestPost }) => {
   return (
     <Link to="/feed">
       <div className="card-sm cursor-pointer">
-        <div className="flex items-center mb-3  gap-1 m-1">
-          <HeroOutlined.DevicePhoneMobileIcon className="size-5" />
-          <p>Feed</p>
-
-          <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto   up-right" />
-        </div>
+        <CardTitle title="Feed" IconName={HeroOutlined.DevicePhoneMobileIcon} />
 
         <hr />
 
@@ -209,7 +217,7 @@ export const DashboardFeed = ({ latestPost }) => {
               <div
                 onClick={handlePostSelect}
                 id="post"
-                className="mb-1 rounded-xl border  hover:bg-gray-100 px-5 py-6 "
+                className="mb-1 rounded-xl   hover:bg-gray-100 px-5 py-6 "
               >
                 <div className="flex items-center gap-1">
                   {latestPost.user.profile_picture_url ? (
@@ -294,11 +302,7 @@ export const DashboardResidents = () => {
   }, []);
   return (
     <div className="card-sm cursor-pointer">
-      <div className="flex items-center mb-3 gap-1 m-1">
-        <HeroOutlined.DevicePhoneMobileIcon className="size-5" />
-        <p>Residents</p>
-        <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
-      </div>
+      <CardTitle title="Residents" IconName={HeroOutlined.UserIcon} />
       <hr />
       <div
         className={`bg-gray-100 px-1 mt-3 bg-transparent rounded-lg ${minHeight} ${maxHeight}`}
@@ -402,5 +406,105 @@ export const Clock = (
         </h5>
       )}
     </div>
+  );
+};
+
+export const CardTitle = ({ title, IconName }) => {
+  return (
+    <>
+      <div className="flex items-center mb-3 gap-1 m-1">
+        {IconName && <IconName className="size-5" />}
+        <p>{title && title}</p>
+        <HeroOutlined.ArrowUpRightIcon className="size-4 ml-auto up-right" />
+      </div>
+    </>
+  );
+};
+
+export const DashBoardPoll = () => {
+  let [currentPoll, setCurrentPoll] = useState(0);
+  const [polls, setPolls] = useState();
+
+  function handlePollTraverse(action) {
+    setCurrentPoll((prev) => {
+      if (action === "increment") {
+        return prev < polls.length - 1 ? prev + 1 : prev;
+      } else if (action === "decrement") {
+        return prev > 0 ? prev - 1 : prev;
+      }
+      return prev;
+    });
+  }
+  const fetchPolls = async () => {
+    const data = await getPolls();
+    setPolls(data.polls);
+    console.log(data.polls);
+  };
+  useEffect(() => {
+    fetchPolls();
+  }, []);
+  return (
+    <>
+      <div>
+        <div className={`card-sm `}>
+          <CardTitle title="Polls" IconName={BiPoll} />
+          <hr />
+          <div
+            className={`py-2 px-8 rounded-xl mt-3 max-h-[232px] ${minHeight} overflow-y-auto`}
+          >
+            <div className="text-center">
+              <div className="text-gray-500 text-xs">Topic</div>
+              <div className="font-semibold flex justify-center">
+                <HeroOutlined.MegaphoneIcon className="size-5 me-1" />
+                {polls && polls[currentPoll].topic}
+              </div>
+              <div className="text-xs">By: Eber Villanobos</div>
+              <div className="text-blue-500 flex items-center text-xs justify-center mt-2">
+                <HeroOutlined.EyeIcon className="size-3" />
+                See Details
+              </div>
+              <br />
+              {polls &&
+                polls[currentPoll].options.map((option, index) => (
+                  <div key={index} id="votePanel" className="mb-2">
+                    <div className="flex justify-between">
+                      <p className="mb-1">{option.content}</p>
+                      <div className="flex items-center gap-1 mb-1">
+                        <HeroOutlined.UserCircleIcon className="size-4" />
+                        <div className="text-xs">+4</div>
+                      </div>
+                    </div>
+                    <BorderLinearProgress
+                      variant="determinate"
+                      value={20}
+                      height={18}
+                      shade="#00A3EE"
+                    />
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          <br />
+          <div className="flex justify-between gap-1">
+            <div
+              onClick={() => handlePollTraverse("decrement")}
+              className="bg-gray-100 p-3 rounded-lg text-xs text-center basis- hover:cursor-pointer"
+            >
+              <HeroSolid.ChevronLeftIcon className="size-5 m-auto" />
+            </div>
+            <div className="bg-gray-100 p-3 rounded-lg text-xs text-center basis-full hover:cursor-pointer">
+              Vote
+            </div>
+            <div
+              onClick={() => handlePollTraverse("increment")}
+              className="bg-gray-100 p-3 rounded-lg text-xs text-center basis- hover:cursor-pointer "
+            >
+              <HeroSolid.ChevronRightIcon className="size-5 m-auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };

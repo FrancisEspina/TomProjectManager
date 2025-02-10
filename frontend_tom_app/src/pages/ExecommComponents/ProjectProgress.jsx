@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BorderLinearProgress from "../../components/BorderLinearProgress";
 import {
   ArrowRightIcon,
@@ -8,7 +8,10 @@ import {
 } from "@heroicons/react/24/outline";
 import ButtonIcon from "../../components/ButtonIcon";
 BorderLinearProgress;
+
 const ProjectProgress = () => {
+  const [projectStatus, setProjectStatus] = useState();
+
   const projects = [
     {
       name: "MindBreakers",

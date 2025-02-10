@@ -1,7 +1,7 @@
 import axios from "axios";
 import { persistor } from "./services/store/Store.js";
 
-// const API_URL = "http://192.168.1.7:3000";
+// const API_URL = "http://192.168.1.8:3000";
 const API_URL = "http://localhost:3000";
 
 const axiosInstance = axios.create({
@@ -228,6 +228,35 @@ export const getAnnouncements = async () => {
     return response.data;
   } catch (error) {}
 };
+
+export const postAnnouncement = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/announcements",
+      {
+        announcement: {
+          title: payload.title,
+          content: payload.content,
+          expiration: payload.expiration,
+        },
+
+        poll: {
+          topic: payload.topic && payload.topic,
+          options: payload.options && payload.options,
+        },
+      },
+
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data.error_description;
+  }
+};
 export const showImage = (path) => {
   return path ? API_URL + path : null;
 };
@@ -254,17 +283,45 @@ export const createHearts = async (payload) => {
 
 export const getHearts = async (user_id) => {
   try {
-    const response = await axiosInstance.get(
-      `/hearts/${user_id}/get_user_hearts`,
-      {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get(`/hearts/get_user_hearts`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
     console.log(response);
     return response.data;
   } catch (error) {
     throw error.response.data;
+  }
+};
+
+export const deleteHearts = async (payload) => {
+  try {
+    console.log(payload);
+    const response = await axiosInstance.delete("/hearts/destroy_by_post", {
+      data: { post_id: payload.post_id }, //
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message; // ✅ Handle missing response data
+  }
+};
+
+export const getPolls = async () => {
+  try {
+    const response = await axiosInstance.get("/announcements/get_polls", {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message; // ✅ Handle missing response data
   }
 };

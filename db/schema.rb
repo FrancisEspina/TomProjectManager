@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_29_212332) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_10_194008) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_29_212332) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "expiration"
     t.index ["user_id"], name: "index_announcements_on_user_id"
   end
 
@@ -75,6 +76,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_29_212332) do
     t.index ["post_id"], name: "index_hearts_on_post_id"
     t.index ["user_id", "post_id"], name: "index_hearts_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_hearts_on_user_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.bigint "poll_id", null: false
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["poll_id"], name: "index_options_on_poll_id"
+  end
+
+  create_table "polls", force: :cascade do |t|
+    t.bigint "announcement_id", null: false
+    t.string "topic"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["announcement_id"], name: "index_polls_on_announcement_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -109,10 +126,26 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_29_212332) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "option_id", null: false
+    t.bigint "poll_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_votes_on_option_id"
+    t.index ["poll_id"], name: "index_votes_on_poll_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "announcements", "users"
   add_foreign_key "hearts", "posts"
   add_foreign_key "hearts", "users"
+  add_foreign_key "options", "polls"
+  add_foreign_key "polls", "announcements"
   add_foreign_key "posts", "users"
+  add_foreign_key "votes", "options"
+  add_foreign_key "votes", "polls"
+  add_foreign_key "votes", "users"
 end

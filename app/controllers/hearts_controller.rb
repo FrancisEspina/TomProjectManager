@@ -1,5 +1,5 @@
 class HeartsController < ApplicationController
-  before_action :authenticate_devise_api_token!, only: [:create]
+  before_action :authenticate_devise_api_token!, only: [:create, :destroy_by_post]
 def create
   @user = authenticate_user_id_with_token
   @post = Post.find_by(id: params[:post_id]) # Using find_by to prevent raising an exception if post not found
@@ -30,6 +30,8 @@ def create
   end
 end
 
+
+
 def get_user_hearts
   @user = authenticate_user_id_with_token
   unless @user
@@ -44,6 +46,18 @@ def get_user_hearts
        return render json: {message: "User has no hearts!"}, status: :not_found
   end
 
+end
+
+def destroy_by_post
+ @user = authenticate_user_id_with_token
+
+ heart = Heart.find_by(user_id: @user.id, post_id: params[:post_id])
+ if heart.destroy
+  return render json: {message: "Post unhearted"}, status: :ok
+ else
+  return render json: {message: "Failed to unheart"}, status: :unauthorized
+ end
+ 
 end
 
 

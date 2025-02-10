@@ -17,7 +17,7 @@
 }
 
 body {
-  background-color: #f1f1f1;
+  background-color: #f7f7f7;
   transition: background-image 0.5s ease-in-out;
 }
 
@@ -81,13 +81,13 @@ input:not([type="radio"]):not([type="range"]) {
 
 /* Apply specific styles to input types of text, email, and password */
 input:not([type="radio"]) {
-  background-color: rgb(224, 224, 224);
+  @apply bg-gray-200;
   width: 100%;
   /* outline: 1px solid rgb(168, 168, 168) !important; */
 }
 
 input:not([type="radio"]):not([type="range"]):focus {
-  outline: 3px solid rgb(255, 214, 32) !important; /* Change to your preferred color */
+  outline: 3px solid #ffd620 !important; /* Change to your preferred color */
   outline-offset: 2px;
 }
 
@@ -204,4 +204,13 @@ input:not([type="radio"]):not([type="range"]):focus {
 
 .zoom:hover {
   transform: scale(1.5) !important;
+}
+
+.textarea-blank {
+  @apply min-h-[65px];
+  @apply focus:outline-0;
+  @apply w-full;
+  @apply p-3;
+  @apply overflow-hidden;
+  @apply resize-none;
 }

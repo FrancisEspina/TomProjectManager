@@ -8,10 +8,16 @@ Rails.application.routes.draw do
     end
   end
     resources :posts, only: [:index, :create]
-    resources :announcements, only: [:index]
-    resources :hearts, only: [:create] do
-      member do
-        get :get_user_hearts
+    resources :announcements, only: [:index, :create] do
+      collection do
+        get :get_polls
+      end
+    end
+
+    resources :hearts, only: [:create, :get_user_hearts, :destroy_by_post] do
+      collection do
+        delete :destroy_by_post  # DELETE /hearts/destroy_by_post (with post_id)
+        get :get_user_hearts     # GET /hearts/get_user_hearts (to fetch user's hearts)
       end
     end
 
