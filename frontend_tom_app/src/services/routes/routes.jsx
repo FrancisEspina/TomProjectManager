@@ -7,6 +7,7 @@ import * as api from "./../../api";
 import Login from "./../../pages/Login";
 import Execomm from "./../../pages/Execomm.jsx";
 import Dashboard from "./../../pages/Dashboard";
+import Residents from "./../../pages/Residents.jsx";
 import Profile from "./../../pages/Profile";
 import About from "./../../pages/About.jsx";
 import Register from "./../../pages/Register";
@@ -47,26 +48,22 @@ export const router = createBrowserRouter([
         element: <div>Schedules</div>,
       },
       {
-        name: "allResidents",
         path: "/residents",
-        element: <div>Residents</div>,
+        element: <Residents />,
       },
       {
         path: "/execomm",
-        element: <Execomm />,
+        element: <ProtectedRoute element={<Execomm />} />,
       },
       {
         name: "bulletin",
         path: "/execomm/bulletin",
-        element: <Bulletin />,
+        element: <ProtectedRoute element={<Bulletin />} />,
       },
       {
+        name: "about",
         path: "/about",
-        element: (
-          <div>
-            <About />
-          </div>
-        ),
+        element: <About />,
       },
       {
         path: "/tomlympics",
@@ -74,7 +71,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: <ProtectedRoute element={<Bulletin />} />,
       },
     ],
   },

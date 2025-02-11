@@ -12,6 +12,8 @@ import { getAnnouncements, getPolls, getUsers, showImage } from "../../api";
 import { timeAgo } from "../../helpers/utils";
 import { BiPoll } from "react-icons/bi";
 import BorderLinearProgress from "../BorderLinearProgress";
+import { Dialog } from "@mui/material";
+import DialogBox from "../Dialog";
 
 const maxHeight = "max-h-[295px] overflow-y-auto";
 const minHeight = "min-h-[100px]";
@@ -477,7 +479,7 @@ export const DashBoardPoll = () => {
                     <BorderLinearProgress
                       variant="determinate"
                       value={20}
-                      height={18}
+                      height={20}
                       shade="#00A3EE"
                     />
                   </div>
@@ -493,9 +495,7 @@ export const DashBoardPoll = () => {
             >
               <HeroSolid.ChevronLeftIcon className="size-5 m-auto" />
             </div>
-            <div className="bg-gray-100 p-3 rounded-lg text-xs text-center basis-full hover:cursor-pointer">
-              Vote
-            </div>
+            <DialogBox buttonText="Vote">hey</DialogBox>
             <div
               onClick={() => handlePollTraverse("increment")}
               className="bg-gray-100 p-3 rounded-lg text-xs text-center basis- hover:cursor-pointer "

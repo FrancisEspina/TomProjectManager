@@ -70,7 +70,7 @@ const NavBar = () => {
             </div>
           </div>
 
-          <div className="hidden lg:block w-80 relative">
+          {/* <div className="hidden lg:block w-80 relative">
             <div className=" absolute top-1 right-2 z-10">
               <Outlined.MagnifyingGlassIcon className=" p-1 size-7 text-gray-400" />
             </div>
@@ -80,7 +80,7 @@ const NavBar = () => {
               type="text"
               className="pl-10 w-full border border-gray-300 rounded-md p-2"
             />
-          </div>
+          </div> */}
 
           <div className="ml-auto flex items-center gap-3">
             {navButtons.map((button) => (

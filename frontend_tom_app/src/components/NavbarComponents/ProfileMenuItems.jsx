@@ -37,14 +37,19 @@ const ProfileMenuItems = (props) => {
           </>
         ) : (
           <>
-            <Solid.UserCircleIcon className="size-12" />
+            <Solid.UserCircleIcon className="size-12 text-gray-300" />
           </>
         )}
         <div>
-          <div className="text-sm lg:text-lg md:text-md font-semibold">
+          <div className="text-sm lg:text-lg md:text-md ">
             {props.user.first_name} {props.user.last_name}
           </div>
-          <p className="text-gray-500 font-none">{props.user.username}</p>
+          <p className="text-gray-500 text-[10pt] mt-[-5px] mb-1 font-none">
+            {props.user.username}
+          </p>
+          <p className="text-gray-500 font-none">
+            {props.user.year} | {props.user.batch_name}
+          </p>
         </div>
       </div>
       <hr className="my-3" />

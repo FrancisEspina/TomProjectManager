@@ -110,13 +110,13 @@ const MyAnnouncements = ({ myAnnouncements }) => {
                       <ButtonIcon
                         text="Delete"
                         icon={TrashIcon}
-                        color="bg-red-500 text-white"
+                        color="hover:bg-red-500 bg-gray-200 hover:text-white"
                       />
 
                       <ButtonIcon
                         text="Edit"
                         icon={PencilIcon}
-                        color="bg-blue-500 text-white"
+                        color="hover:bg-blue-500 bg-gray-200 hover:text-white"
                       />
                     </td>
                   </tr>
@@ -186,7 +186,7 @@ const NewAnnouncement = ({ fetchAnnouncements }) => {
 
   return (
     <>
-      <div>
+      <div className="relative">
         <div className="flex items-end gap-2">
           <div className="">
             <p className="text-gray-500 mb-1">Title</p>
@@ -222,7 +222,7 @@ const NewAnnouncement = ({ fetchAnnouncements }) => {
           </div>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-3 mb-2">
           <p className="text-gray-500 mb-1">Details</p>
           <textarea
             name="content"
@@ -233,7 +233,7 @@ const NewAnnouncement = ({ fetchAnnouncements }) => {
             value={announcement.content || ""} // Ensure controlled input
           ></textarea>
         </div>
-        {hasPoll && (
+        {hasPoll ? (
           <>
             <div>
               <div className="text-sm my-3 flex items-center">
@@ -291,6 +291,15 @@ const NewAnnouncement = ({ fetchAnnouncements }) => {
                     />
                   </div>
                 ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center justify-center border-2 border-gray-300 border-dashed rounded-xl bg-gray-100 h-[200px]">
+              <div className="flex items-center gap-2 text-gray-500">
+                <BiPoll size={30} />
+                Add Poll
               </div>
             </div>
           </>

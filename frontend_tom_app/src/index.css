@@ -199,11 +199,12 @@ input:not([type="radio"]):not([type="range"]):focus {
 }
 
 .zoom {
-  transition: transform 0.2s ease !important; /* Smooth movement */
+  transition: transform 0.3s ease-in-out !important; /* Smooth movement */
 }
 
 .zoom:hover {
-  transform: scale(1.5) !important;
+  transform: scale(1.03) !important;
+  @apply drop-shadow-2xl;
 }
 
 .textarea-blank {
@@ -212,5 +213,4 @@ input:not([type="radio"]):not([type="range"]):focus {
   @apply w-full;
   @apply p-3;
   @apply overflow-hidden;
-  @apply resize-none;
 }
