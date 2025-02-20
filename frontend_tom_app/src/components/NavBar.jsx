@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import * as Outlined from "@heroicons/react/24/outline";
 import SideNav from "./../components/SideNav.jsx";
 
@@ -12,6 +11,7 @@ import { checkValid } from "./../api.js";
 
 import { useDispatch } from "react-redux";
 import { setUser } from "./../services/store/reducers/AuthSlice";
+import { current_user } from "../helpers/utils.jsx";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const NavBar = () => {
   useEffect(() => {
     checkToken();
   }, []);
-  const user = useSelector((state) => state.user.user);
+  const user = current_user();
   const [show, setShow] = useState(true);
 
   const navButtons = [

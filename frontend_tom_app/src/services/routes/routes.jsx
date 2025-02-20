@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <ProtectedRoute element={<Bulletin />} />,
+        element: <ProtectedRoute element={<Profile />} />,
       },
     ],
   },

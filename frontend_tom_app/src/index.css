@@ -214,3 +214,12 @@ input:not([type="radio"]):not([type="range"]):focus {
   @apply p-3;
   @apply overflow-hidden;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}

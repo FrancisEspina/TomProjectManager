@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import * as Calendar from "./ExecommComponents/Calendar";
 import * as api from "./../api";
-import { useSelector } from "react-redux";
-import { getCategoryName } from "../helpers/utils.jsx";
+import { current_user, getCategoryName } from "../helpers/utils.jsx";
 import * as DashboardComponents from "../components/DashboardComponents/DashboardComponents.jsx";
 import { FaCalendar } from "react-icons/fa";
 import { CalendarDateRangeIcon } from "@heroicons/react/24/outline";
+import { current } from "@reduxjs/toolkit";
 const Dashboard = () => {
   const [latesPost, setLatestPost] = useState(null);
   useEffect(() => {
@@ -16,7 +16,7 @@ const Dashboard = () => {
     const response = await api.getPosts();
     setLatestPost(response.posts[0]);
   };
-  const user = useSelector((state) => state.user.user);
+  const user = current_user();
   return (
     //      <DashboardComponents.CurrentProject />
     <div className="">
@@ -48,7 +48,7 @@ const Dashboard = () => {
           <DashboardComponents.DashBoardAnnouncements />
         </div>
         <div className="flex-auto lg:basis-1/3 basis-1/2">
-          <DashboardComponents.DashBoardPoll />
+          {<DashboardComponents.DashBoardPoll />}
         </div>
         <div className="flex-auto lg:basis-auto basis-1/2 ">
           <DashboardComponents.DashboardResidents />

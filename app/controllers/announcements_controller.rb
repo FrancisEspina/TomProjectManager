@@ -1,5 +1,5 @@
 class AnnouncementsController < ApplicationController
-  # skip_before_action :verify_authenticity_token, raise: false
+  skip_before_action :verify_authenticity_token, raise: false
   before_action :authenticate_devise_api_token!, only: [:index, :create, :get_polls]
  
   def index
@@ -69,10 +69,11 @@ class AnnouncementsController < ApplicationController
         id: poll.id,
         topic: poll.topic,
         options: poll.options,
+        votes: poll.votes,
         announcement: poll.announcement,
         owner: {
             name: poll.announcement.user.first_name + " " + poll.announcement.user.last_name 
-        }
+        },
       }
     end
 

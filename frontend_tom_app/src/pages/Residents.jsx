@@ -38,7 +38,7 @@ const Residents = () => {
 
       <div className="flex justify-center flex-wrap gap-3">
         <div className="relative w-[400px] lg:w-[300px] ">
-          <div className=" absolute top-1 right-2 z-10">
+          <div className=" absolute z-auto top-1 right-2 z-10">
             <MagnifyingGlassIcon className=" p-1 size-7 text-gray-400" />
           </div>
 
@@ -49,9 +49,12 @@ const Residents = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center justify-center  gap-2">
-          {shortcuts.map((shortcut) => (
-            <div className="bg-transparent border-gray-300 hover:border-0 border rounded-full py-2 px-3 text-[9pt] hover:bg-amber-400 cursor-pointer">
+        <div className="flex lg:flex-wrap items-center lg:justify-center gap-2 overflow-x-auto hide-scrollbar whitespace-nowrap pl-4">
+          {shortcuts.map((shortcut, index) => (
+            <div
+              key={index}
+              className="bg-transparent hover:border-0 border rounded-full py-2 px-3 text-[9pt] hover:bg-amber-400 cursor-pointer"
+            >
               {shortcut}
             </div>
           ))}

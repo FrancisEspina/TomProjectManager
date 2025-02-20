@@ -8,15 +8,14 @@ import {
   deleteHearts,
 } from "../api";
 import { PaperAirplaneIcon, UserCircleIcon } from "@heroicons/react/24/outline";
-import { timeAgo } from "../helpers/utils";
+import { current_user, timeAgo } from "../helpers/utils";
 import { FaRegComment } from "react-icons/fa";
 import { FiAirplay, FiRepeat, FiSend } from "react-icons/fi";
 import { TiHeart, TiHeartOutline } from "react-icons/ti";
-import { useSelector } from "react-redux";
 
 const Feed = () => {
-  const current_user = useSelector((state) => state.user.user);
-  const user_id = current_user.id;
+  const user = current_user();
+  const user_id = user.id;
   const textareaRef = useRef(null);
   const [heartAdded, setHeartAdded] = useState(false);
   const [userPost, setUserPost] = useState(""); // Only store the content, not user_id here
@@ -113,11 +112,11 @@ const Feed = () => {
         <form onSubmit={handleSendPost}>
           <div className="border px-5 pt-7 m-[auto] max-w-xl">
             <div className="flex gap-1">
-              {current_user.profile_picture_url ? (
+              {user.profile_picture_url ? (
                 <>
                   <img
                     className="size-12 rounded-full"
-                    src={showImage(current_user.profile_picture_url)}
+                    src={showImage(user.profile_picture_url)}
                   />
                 </>
               ) : (

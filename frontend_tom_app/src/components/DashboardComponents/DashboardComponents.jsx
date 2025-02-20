@@ -8,12 +8,20 @@ import { TiHeartOutline, TiHeart } from "react-icons/ti";
 import IconBox from "./IconBox";
 import ButtonIcon from "../ButtonIcon";
 import { Link } from "react-router-dom";
-import { getAnnouncements, getPolls, getUsers, showImage } from "../../api";
-import { timeAgo } from "../../helpers/utils";
+import {
+  castVote,
+  getAnnouncements,
+  getPolls,
+  getUsers,
+  showImage,
+} from "../../api";
+import { current_user, timeAgo } from "../../helpers/utils";
 import { BiPoll } from "react-icons/bi";
 import BorderLinearProgress from "../BorderLinearProgress";
-import { Dialog } from "@mui/material";
+import { Dialog, Skeleton } from "@mui/material";
 import DialogBox from "../Dialog";
+import { useSelector } from "react-redux";
+import DashSkeleton from "./DashSkeleton";
 
 const maxHeight = "max-h-[295px] overflow-y-auto";
 const minHeight = "min-h-[100px]";
@@ -141,7 +149,7 @@ export const CurrentProject = () => {
 };
 
 export const DashBoardAnnouncements = () => {
-  const [announcements, setAnnouncement] = useState();
+  let [announcements, setAnnouncement] = useState();
   const fetchAnnouncements = async () => {
     const data = await getAnnouncements();
     console.log("FETCHHHHH", data.announcements);
@@ -150,6 +158,17 @@ export const DashBoardAnnouncements = () => {
   useEffect(() => {
     fetchAnnouncements();
   }, []);
+
+  if (!announcements) {
+    return (
+      <>
+        <DashSkeleton
+          text={"No Announcements"}
+          Icon={HeroOutlined.MegaphoneIcon}
+        />
+      </>
+    );
+  }
   return (
     <>
       <div className={`card-sm cursor-pointer`}>
@@ -424,87 +443,143 @@ export const CardTitle = ({ title, IconName }) => {
 };
 
 export const DashBoardPoll = () => {
-  let [currentPoll, setCurrentPoll] = useState(0);
-  const [polls, setPolls] = useState();
+  const [currentPollIndex, setCurrentPoll] = useState(0);
+  const [polls, setPolls] = useState([]);
+  const user = current_user();
+  let [voted, setVoted] = useState(false);
 
-  function handlePollTraverse(action) {
-    setCurrentPoll((prev) => {
-      if (action === "increment") {
-        return prev < polls.length - 1 ? prev + 1 : prev;
-      } else if (action === "decrement") {
-        return prev > 0 ? prev - 1 : prev;
-      }
-      return prev;
-    });
-  }
+  const votePoll = async (data) => {
+    let response = await castVote(data);
+    console.log(response);
+    setVoted((prev) => !prev);
+  };
+
   const fetchPolls = async () => {
     const data = await getPolls();
-    setPolls(data.polls);
-    console.log(data.polls);
+    setPolls(data.polls || []);
   };
   useEffect(() => {
     fetchPolls();
-  }, []);
-  return (
-    <>
-      <div>
-        <div className={`card-sm `}>
-          <CardTitle title="Polls" IconName={BiPoll} />
-          <hr />
-          <div
-            className={`py-2 px-8 rounded-xl mt-3 max-h-[232px] ${minHeight} overflow-y-auto`}
-          >
-            <div className="text-center">
-              <div className="text-gray-500 text-xs">Topic</div>
-              <div className="font-semibold flex justify-center">
-                <HeroOutlined.MegaphoneIcon className="size-5 me-1" />
-                {polls && polls[currentPoll].topic}
-              </div>
-              <div className="text-xs">By: Eber Villanobos</div>
-              <div className="text-blue-500 flex items-center text-xs justify-center mt-2">
-                <HeroOutlined.EyeIcon className="size-3" />
-                See Details
-              </div>
-              <br />
-              {polls &&
-                polls[currentPoll].options.map((option, index) => (
-                  <div key={index} id="votePanel" className="mb-2">
-                    <div className="flex justify-between">
-                      <p className="mb-1">{option.content}</p>
-                      <div className="flex items-center gap-1 mb-1">
-                        <HeroOutlined.UserCircleIcon className="size-4" />
-                        <div className="text-xs">+4</div>
-                      </div>
-                    </div>
-                    <BorderLinearProgress
-                      variant="determinate"
-                      value={20}
-                      height={20}
-                      shade="#00A3EE"
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
+  }, [voted]);
 
-          <br />
-          <div className="flex justify-between gap-1">
-            <div
-              onClick={() => handlePollTraverse("decrement")}
-              className="bg-gray-100 p-3 rounded-lg text-xs text-center basis- hover:cursor-pointer"
-            >
-              <HeroSolid.ChevronLeftIcon className="size-5 m-auto" />
+  const normalizedValue = (poll, option_id) => {
+    if (poll.votes.length === 0) return 0;
+    let max = poll.votes.length;
+    let options_length = poll.votes.filter(
+      (vote) => vote.option_id === option_id
+    ).length;
+    return (options_length / max) * 100;
+  };
+
+  const optionValue = (poll, option_id) => {
+    let options_length = poll.votes.filter(
+      (vote) => vote.option_id === option_id
+    ).length;
+
+    return options_length;
+  };
+
+  const handlePollTraverse = (action) => {
+    setCurrentPoll((prev) => {
+      if (action === "increment")
+        return prev < polls.length - 1 ? prev + 1 : prev;
+      if (action === "decrement") return prev > 0 ? prev - 1 : prev;
+      return prev;
+    });
+  };
+
+  if (!polls || polls.length === 0) {
+    return (
+      <>
+        <DashSkeleton text={"No Polls"} Icon={BiPoll} minHeight={minHeight} />
+      </>
+    );
+  }
+
+  const currentPoll = polls[currentPollIndex];
+
+  return (
+    <div>
+      <div className="card-sm">
+        <CardTitle title="Polls" IconName={BiPoll} />
+        <hr />
+        <div className="py-2 px-8 rounded-xl mt-3 max-h-[232px] overflow-y-auto">
+          <div className="text-center">
+            <div className="text-gray-500 text-xs">Topic</div>
+            <div className="font-semibold flex justify-center">
+              <HeroOutlined.MegaphoneIcon className="size-5 me-1" />
+              {currentPoll.topic}
             </div>
-            <DialogBox buttonText="Vote">hey</DialogBox>
-            <div
-              onClick={() => handlePollTraverse("increment")}
-              className="bg-gray-100 p-3 rounded-lg text-xs text-center basis- hover:cursor-pointer "
-            >
-              <HeroSolid.ChevronRightIcon className="size-5 m-auto" />
+            <div className="text-xs">By: {currentPoll.owner.name}</div>
+            <div className="text-blue-500 flex items-center text-xs justify-center mt-2">
+              <HeroOutlined.EyeIcon className="size-3" />
+              See Details
             </div>
+            <br />
+            {currentPoll.options.map((option, index) => (
+              <div key={index} id="votePanel" className="mb-2">
+                <div className="flex justify-between">
+                  <p className="mb-1">{option.content}</p>
+                  <div className="flex items-center gap-1 mb-1">
+                    <HeroOutlined.UserCircleIcon className="size-4" />
+                    <div className="text-xs">
+                      {optionValue(currentPoll, option.id)}
+                    </div>
+                  </div>
+                </div>
+                <BorderLinearProgress
+                  variant="determinate"
+                  value={normalizedValue(currentPoll, option.id)}
+                  height={20}
+                  shade="#00A3EE"
+                />
+              </div>
+            ))}
           </div>
         </div>
+        <br />
+        <div className="flex justify-between gap-1">
+          <button
+            onClick={() => handlePollTraverse("decrement")}
+            className="bg-gray-100 p-3 rounded-lg text-xs text-center basis- hover:cursor-pointer"
+          >
+            <HeroSolid.ChevronLeftIcon className="size-5 m-auto" />
+          </button>
+          <DialogBox title="Poll" Icon={FaPoll} buttonText="Vote">
+            <div className="flex gap-1">
+              <HeroOutlined.MegaphoneIcon className="size-5" />:
+              <div>
+                <div>{currentPoll.topic}</div>
+                <p className="text-gray-500">By: {currentPoll.owner.name}</p>
+              </div>
+            </div>
+            <br />
+            <div className="flex flex-col gap-2">
+              {currentPoll.options.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    votePoll({
+                      voter: user.id,
+                      option_id: option.id,
+                      poll_id: currentPoll.id,
+                    })
+                  }
+                  className="border hover:bg-gray-100 hover:text-black bg-transparent text-start"
+                >
+                  {option.content}
+                </button>
+              ))}
+            </div>
+          </DialogBox>
+          <button
+            onClick={() => handlePollTraverse("increment")}
+            className="bg-gray-100 p-3 rounded-lg text-xs text-center basis- hover:cursor-pointer "
+          >
+            <HeroSolid.ChevronRightIcon className="size-5 m-auto" />
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };

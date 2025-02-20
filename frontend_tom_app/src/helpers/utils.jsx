@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../api";
+import { useSelector } from "react-redux";
 
 // ✅ Function to return category names
 export const getCategoryName = (category) => {
@@ -12,6 +13,13 @@ export const getCategoryName = (category) => {
     default:
       return "Unknown"; // Handle unexpected cases
   }
+};
+
+export const current_user = () => {
+  let user = useSelector((state) => state.user.user);
+  return user;
+  // const { id, first_name, last_name, email, username, batch_name, year } = user;
+  // return { id, first_name, last_name, email, username, batch_name, year };
 };
 
 // ✅ Custom hook for redirecting to dashboard if logged in

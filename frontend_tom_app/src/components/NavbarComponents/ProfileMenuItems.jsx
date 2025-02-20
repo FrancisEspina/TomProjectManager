@@ -25,7 +25,7 @@ const ProfileMenuItems = (props) => {
   ];
 
   return (
-    <div>
+    <div className="z-50">
       <div className="flex items-center gap-2 m-2 py-3">
         {props.user.profile_picture_url ? (
           <>

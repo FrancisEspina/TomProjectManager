@@ -325,3 +325,26 @@ export const getPolls = async () => {
     throw error.response?.data || error.message; // ✅ Handle missing response data
   }
 };
+
+export const castVote = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/votes",
+      {
+        vote: {
+          poll_id: payload.poll_id,
+          option_id: payload.option_id,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

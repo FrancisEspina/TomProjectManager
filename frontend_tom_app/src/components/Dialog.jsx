@@ -6,11 +6,14 @@ import {
   DialogActions,
   Button,
   Typography,
+  Icon,
 } from "@mui/material";
-
+import Backdrop from "@mui/material/Backdrop";
+import { UserIcon } from "@heroicons/react/24/solid";
 export default function DialogBox({
   title = "Dialog Title",
-  description = "This is a dialog box.",
+  Icon = UserIcon,
+  description: body = "This is a dialog box.",
   buttonText = "Open Dialog",
   buttonVariant = "solo",
   children,
@@ -32,8 +35,25 @@ export default function DialogBox({
       >
         {buttonText}
       </button>
-      <Backdrop className="rounded-[50px]" open={open} onClose={handleClose}>
-        <div className="min-w-[500px] p-5">{children}</div>
+      <Backdrop className="z-10" open={open} onClick={handleClose}>
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white rounded-3xl w-[500px] mx-2 px-5 py-3"
+        >
+          <div className="flex items-center mt-3 gap-x-2">
+            <Icon className="size-5 text-gray-600" />
+            <div className="text-lg font-bold ">{title}</div>
+          </div>
+          <DialogContent>
+            {children || <div className="text-sm">{body}</div>}
+          </DialogContent>
+
+          <DialogActions>
+            <button onClick={handleClose} className="text-white">
+              Done
+            </button>
+          </DialogActions>
+        </div>
       </Backdrop>
     </>
   );
